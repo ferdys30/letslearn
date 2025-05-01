@@ -11,7 +11,7 @@
     <!-- Section Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Soal Kuis Pemrograman Website</h2>
+            <h2 class="text-xl font-semibold text-gray-800">Soal Kuis HTML Dasar</h2>
             <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Soal</button>
         </div>
 

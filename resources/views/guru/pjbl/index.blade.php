@@ -5,7 +5,7 @@
     <!-- Section: Selamat Datang -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Tambahkan Studi Kasus</h1>
-        <p class="text-gray-600 mt-1">Project Based Learning Syntax 1</p>
+        <p class="text-gray-600 mt-1">Project Based Learning</p>
     </section>
 
     <!-- Section Tabel -->
@@ -24,12 +24,12 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
+                    <td>1</td>
+                    <td>Sekolah merupakan tempat dimana siswa dapat menimba ilmu...</td>
                 </tr>
                 <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
+                    <td>2</td>
+                    <td>Pahlawan sosok seseorang yang memperjuangkan negara dimana...</td>
                 </tr>
             </tbody>
         </table>

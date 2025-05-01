@@ -10,7 +10,8 @@
             <div class="hidden md:flex items-center ml-auto space-x-4">
                 <x-nav-link-siswa href="/" :active="request()->is('/')">Home</x-nav-link-siswa>
                 <x-nav-link-siswa href="/siswa/materi" :active="request()->is('siswa/materi')">Materi</x-nav-link-siswa>
-                <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa>
+                {{-- <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa> --}}
+                <x-nav-link-siswa href="/siswa/pjbl/kelompok" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa>
                 <x-nav-link-siswa href="/siswa/kuis" :active="request()->is('siswa/kuis')">Kuis</x-nav-link-siswa>
 
                 <!-- Login/Register -->
@@ -54,7 +55,8 @@
         <div class="px-2 pt-2 pb-3 space-y-1">
             <a href="/" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
             <a href="/siswa/materi" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Materi</a>
-            <a href="/siswa/pjbl" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Project Based Learning</a>
+            {{-- <a href="/siswa/pjbl" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Project Based Learning</a> --}}
+            <a href="/siswa/pjbl/kelompok" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Project Based Learning</a>
             <a href="/siswa/kuis" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Kuis</a>
         </div>
         <div class="border-t border-gray-700 pt-4 pb-3 px-2">

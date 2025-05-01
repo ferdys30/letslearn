@@ -4,93 +4,84 @@
 
     <!-- Section: Selamat Datang -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Tambahkan Kuis</h1>
-        <p class="text-gray-600 mt-1">Pemrograman Website</p>
+        <h1 class="text-2xl font-bold text-gray-800">Tambahkan Syntax</h1>
+        <p class="text-gray-600 mt-1">Project Based Learning</p>
     </section>
 
     <!-- Section Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Kuis Pemrograman Website</h2>
-            <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Kuis</button>
+            <h2 class="text-xl font-semibold text-gray-800">Syntax Project Based Learning</h2>
+            <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Syntax</button>
         </div>
-
+    
         <table id="myTable" class="display">
             <thead>
                 <tr>
-                    <th>Urutan Kuis</th>
-                    <th>Judul Kuis</th>
-                    <th>Deskripsi Materi</th>
-                    <th>Durasi</th>
-                    <th>Soal</th>
+                    <th>Urutan Syntax</th>
+                    <th>Judul</th>
+                    <th>Slug</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>HTML Dasar</td>
-                    <td>Untuk mengukur pemahaman mengenai HTML dasar</td>
-                    <td>60</td>
+                    <td>membuat rumusan masalah</td>
+                    <td>rumusan-masalah</td>
                     <td>
                         <a href="/guru/kuis/1" style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-                            Soal
+                            Edit
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>CSS Layout</td>
-                    <td>Untuk mengukur pemahaman mengenai CSS Layout</td>
-                    <td>60</td>
+                    <td>mencari indikator penyebab masalah</td>
+                    <td>indikator-penyebab-masalah</td>
                     <td>
                         <a href="/guru/kuis/1" style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-                            Soal
+                            Edit
                         </a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </section>
-
+    
     <!-- Modal -->
     <div id="modalForm" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Kuis</h3>
-
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Syntax</h3>
+    
             <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
-
-                <!-- Urutan Kuis -->
+    
+                <!-- Urutan Syntax -->
                 <div>
-                    <label for="urutan_kuis" class="block mb-2 text-sm font-medium text-gray-900">Urutan Kuis</label>
-                    <input type="number" name="urutan_kuis" id="urutan_kuis" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 1, 2, 3..." required>
+                    <label for="urutan_syntax" class="block mb-2 text-sm font-medium text-gray-900">Urutan Syntax</label>
+                    <input type="number" name="urutan_syntax" id="urutan_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 1, 2, 3..." required>
                 </div>
-
-                <!-- Judul Kuis -->
+    
+                <!-- Judul Syntax -->
                 <div>
-                    <label for="judul_kuis" class="block mb-2 text-sm font-medium text-gray-900">Judul Kuis</label>
-                    <input type="text" name="judul_kuis" id="judul_kuis" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: HTML Dasar" required>
+                    <label for="judul_syntax" class="block mb-2 text-sm font-medium text-gray-900">Judul Syntax</label>
+                    <input type="text" name="judul_syntax" id="judul_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: HTML Dasar" required>
                 </div>
-
-                <!-- Deskripsi Materi -->
+    
+                <!-- Slug Syntax -->
                 <div>
-                    <label for="deskripsi_materi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi Materi</label>
-                    <textarea name="deskripsi_materi" id="deskripsi_materi" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: Materi mengenai struktur dasar HTML..." required></textarea>
+                    <label for="slug_syntax" class="block mb-2 text-sm font-medium text-gray-900">Slug Syntax</label>
+                    <input type="text" name="slug_syntax" id="slug_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: html-dasar" required>
                 </div>
-
-                <!-- Durasi -->
-                <div>
-                    <label for="durasi" class="block mb-2 text-sm font-medium text-gray-900">Durasi (menit)</label>
-                    <input type="number" name="durasi" id="durasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 30" required>
-                </div>
-
+    
                 <!-- Tombol Aksi -->
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="toggleModal(false)" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Simpan</button>
                 </div>
             </form>
-
+    
             <!-- Tombol Close -->
             <button onclick="toggleModal(false)" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg font-bold">&times;</button>
         </div>

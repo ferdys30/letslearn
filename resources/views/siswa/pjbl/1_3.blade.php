@@ -17,7 +17,7 @@
     </style>
 <x-layout-siswa>
     <x-slot:tittle>{{ $tittle }}</x-slot:tittle>
-    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-6">
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
         <!-- Card Siswa 1 -->
         <div class="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4">
             <img src="https://i.pravatar.cc/60?img=1" alt="Foto Siswa" class="w-14 h-14 rounded-md object-cover">
@@ -51,9 +51,9 @@
             <!-- Step 1 -->
             <div class="flex flex-col items-center min-w-[180px] p-4 relative">
                 <div class="w-10 h-10 flex items-center justify-center border-2 border-purple-500 text-purple-400 rounded-full font-bold">
-                    1
+                    ✔
                 </div>
-                <p class="text-sm font-bold text-purple-500 mt-2 text-center">Membuat kelompok</p>
+                <p class="text-sm font-bold mt-2 text-center">Rumusan & Indikator</p>
                 <p class="text-xs text-gray-500 text-center">membuat rumusan masalah dan mencari indikator penyebab masalah</p>
                 {{-- <div class="absolute bottom-0 left-0 w-full h-1 bg-purple-500"></div> --}}
             </div>
@@ -130,25 +130,55 @@
         </div>
     </div>
     
-    <div class="w-full h-screen bg-white shadow-md rounded-none p-8 mt-2 relative">
-        <!-- Judul -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Studi Kasus: Pemrograman Website</h2>
-      
-        <!-- Isi Studi Kasus -->
-        <p class="text-gray-700 text-lg leading-relaxed max-w-4xl">
-          Anda diminta untuk membuat sebuah website portofolio pribadi yang menampilkan informasi tentang diri Anda, 
-          proyek yang pernah dikerjakan, serta tautan ke media sosial. Gunakan HTML, CSS, dan JavaScript untuk membuat 
-          tampilan yang menarik dan responsif. Pastikan website Anda dapat dibuka di berbagai perangkat dan memiliki 
-          navigasi yang mudah digunakan.
-        </p>
-      
-        <!-- Tombol Next -->
-        <div class="absolute bottom-8 right-8">
-          <a href="/siswa/pjbl/1_2" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
-            Next →
-          </a>
+    <section class="w-full h-400 bg-white shadow-md rounded-none p-8 mt-2 relative">
+        <div class="flex flex-col lg:flex-row items-center lg:justify-between">
+            <!-- Gambar -->
+            <div class="lg:w-1/2 flex justify-center lg:text-right mt-8 lg:mt-0">
+                <img src="https://tailwindui.com/plus-assets/img/ecommerce-images/home-page-02-edition-01.jpg" alt="Dashboard Image" class="rounded-lg shadow-lg w-full max-w-sm">
+            </div>
+    
+            <!-- Teks -->
+            <div class="lg:w-1/2 text-center lg:text-left">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Indikator Penyebab Masalah Kelompok 1</h2>
+                <!-- Isi Studi Kasus -->
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Anda diminta untuk mencari Indikator Penyebab Masalah dari studi kasus yang telah diberikan. Carilah Indikator Masalah yang bisa kamu dapatkan dari studi kasus tersebut.
+                </p>
+                <input type="text" id="rumusan-masalah" class="border-2 border-gray-300 p-3 w-full mt-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan rumusan masalah...">
+            
+                <!-- Tombol Next -->
+                <div class="mt-4">
+                    <a href="/siswa/pjbl/2" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
+                        Next →
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      
+    </section>
+
+    <div class="w-full border-r border-gray-300 p-4 overflow-y-auto">
+        <h2 class="text-xl font-bold mb-4">Diskusi</h2>
+        <div id="chatBox" class="space-y-6">
+            <div class="bg-white p-3 rounded-lg shadow">
+              <p class="text-sm text-gray-800">👤 <strong>Ana</strong>: Halo semuanya!</p>
+              <button class="text-xs text-purple-600 mt-1 hover:underline" onclick="reply('Ana')">Reply</button>
+            </div>
+            <div class="bg-white p-3 rounded-lg shadow ml-4">
+              <p class="text-sm text-gray-800">↪️ <strong>Budi</strong>: Hai Ana!</p>
+              <button class="text-xs text-purple-600 mt-1 hover:underline" onclick="reply('Budi')">Reply</button>
+            </div>
+            <div class="bg-white p-3 rounded-lg shadow">
+              <p class="text-sm text-gray-800">👤 <strong>Budi</strong>: Bagaimana Cara untuk menyimpulkannya!</p>
+              <button class="text-xs text-purple-600 mt-1 hover:underline" onclick="reply('Budi')">Reply</button>
+            </div>
+          </div>
+          <input type="text" id="rumusan-masalah" class="border-2 border-gray-300 p-3 w-full mt-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Mulai Pembicaraan">
+            
+                <!-- Tombol Next -->
+                <div class="mt-4">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
+                        Submit
+                    </button>
+                </div>
 
 </x-layout-siswa>

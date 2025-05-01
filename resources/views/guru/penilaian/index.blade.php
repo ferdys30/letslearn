@@ -17,6 +17,7 @@
                     <th>NIP</th>
                     <th>Rata Rata Nilai Kuis</th>
                     <th>Project Based Learning</th>
+                    <th>Menu</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,11 @@
                     <td>21050974028</td>
                     <td>60</td>
                     <td>75</td>
+                    <td>
+                        <a href="/guru/penilaian/siswa" style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                            lihat
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -33,6 +39,11 @@
                     <td>21050974029</td>
                     <td>75</td>
                     <td>60</td>
+                    <td>
+                        <a href="/guru/penilaian/siswa" style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                            lihat
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>

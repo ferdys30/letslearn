@@ -5,28 +5,37 @@
 
     <!-- Section: Selamat Datang -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Selamat Datang, Pak Adit 👋</h1>
+        <h1 class="text-2xl font-bold text-gray-800">Selamat Datang, Pak Adi 👋</h1>
         <p class="text-gray-600 mt-1">Senang melihat Anda kembali! Silakan pilih kelas atau lihat data yang tersedia.</p>
     </section>
 
     <!-- Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h2 class="text-3xl font-bold text-gray-800 text-left">Data Nilai Siswa</h2>
+        <h2 class="text-3xl font-bold text-gray-800 text-left">Data Siswa</h2>
         <table id="myTable" class="display">
             <thead>
                 <tr>
-                    <th>Column 1</th>
-                    <th>Column 2</th>
+                    <th>NIS</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Jurusan</th>
+                    <th>No Tlp</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
+                    <td>2354325331</td>
+                    <td>Ferdy</td>
+                    <td>XI</td>
+                    <td>RPL</td>
+                    <td>085707210526</td>
                 </tr>
                 <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
+                    <td>2354325332</td>
+                    <td>Septiawan</td>
+                    <td>XI</td>
+                    <td>RPL</td>
+                    <td>085707210522</td>
                 </tr>
             </tbody>
         </table>
@@ -46,32 +55,6 @@
               </a>
           </div>
 
-          <!-- Card Pemrograman Grafis -->
-          <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-              <h3 class="text-xl font-semibold text-gray-800 mt-4">Pemrograman Grafis</h3>
-              <p class="text-gray-600 mt-2">Pelajari bagaimana membuat desain dan animasi dengan teknik pemrograman grafis.</p>
-              <a href="#" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
-                  Lihat Kelas
-              </a>
-          </div>
-
-          <!-- Card Pemrograman Web -->
-          <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-              <h3 class="text-xl font-semibold text-gray-800 mt-4">Pemrograman Web</h3>
-              <p class="text-gray-600 mt-2">Pelajari cara membangun website interaktif menggunakan HTML, CSS, dan JavaScript.</p>
-              <a href="#" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
-                  Lihat Kelas
-              </a>
-          </div>
-
-          <!-- Card Pemrograman Grafis -->
-          <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-              <h3 class="text-xl font-semibold text-gray-800 mt-4">Pemrograman Grafis</h3>
-              <p class="text-gray-600 mt-2">Pelajari bagaimana membuat desain dan animasi dengan teknik pemrograman grafis.</p>
-              <a href="#" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
-                  Lihat Kelas
-              </a>
-          </div>
       </div>
     </section>
 

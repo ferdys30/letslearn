@@ -1,4 +1,5 @@
 <x-layout-siswa>
+    <x-slot:tittle>{{ $tittle }}</x-slot:tittle>
     <div class="flex min-h-screen">
         <!-- Bagian Kiri: Gambar (1/3 layar) -->
         <div class="hidden md:flex w-1/3 bg-cover bg-center"
@@ -40,7 +41,7 @@
                 </form>
     
                 <p class="text-sm text-gray-600 text-center mt-4">Sudah punya akun? 
-                    <a href="login.html" class="text-blue-600 hover:underline">Login</a>
+                    <a href="/login" class="text-blue-600 hover:underline">Login</a>
                 </p>
             </div>
         </div>
