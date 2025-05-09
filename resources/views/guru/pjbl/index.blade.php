@@ -23,14 +23,13 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($studi_kasus as $sk)
+                    
                 <tr>
-                    <td>1</td>
-                    <td>Sekolah merupakan tempat dimana siswa dapat menimba ilmu...</td>
+                    <td>{{ $sk->kelompok->nama_kelompok }}</td>
+                    <td>{{ $sk->studi_kasus }}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Pahlawan sosok seseorang yang memperjuangkan negara dimana...</td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </section>
@@ -40,20 +39,29 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Studi Kasus</h3>
 
-            <form action="#" method="POST" class="space-y-4">
+            <form action="/tambah/studi_kasus" method="POST" class="space-y-4">
                 @csrf
-
                 <!-- Input No Kelompok -->
+                <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
                 <div>
-                    <label for="no_kelompok" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No. Kelompok</label>
-                    <input type="number" name="no_kelompok" id="no_kelompok" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 1, 2, 3..." required>
+                    <label for="id_kelompok" class="block mb-2 text-sm font-medium text-gray-700 ">No. Kelompok</label>
+                    <select name="id_kelompok" id="id_kelompok" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" required>
+                        <option value="">Pilih Kelompok</option>
+                        @foreach ($kelompok as $item)
+                            <option value="{{ $item->id }}"> {{ $item->nama_kelompok }}</option>
+                        @endforeach
+                    </select>                        
                 </div>
         
                 <!-- Textarea Studi Kasus -->
+                <!-- Textarea Studi Kasus -->
                 <div>
-                    <label for="studi_kasus" class="block text-sm font-medium text-gray-700">Studi Kasus</label>
-                    <textarea name="studi_kasus" id="studi_kasus" rows="5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tuliskan studi kasus di sini..."></textarea>
+                    <label for="studi_kasus" class="block text-sm font-medium text-gray-700 mb-2">Studi Kasus</label>
+                    <textarea name="studi_kasus" id="studi_kasus" rows="5"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                        placeholder="Tuliskan studi kasus di sini..." required></textarea>
                 </div>
+
 
                 <!-- Aksi -->
                 <div class="flex justify-end gap-2">

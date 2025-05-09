@@ -11,31 +11,91 @@
 
     <!-- Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h2 class="text-3xl font-bold text-gray-800 text-left">Data Siswa</h2>
+        <h2 class="text-3xl font-bold text-gray-800 text-left">Data Kelompok</h2>
         <table id="myTable" class="display">
             <thead>
                 <tr>
-                    <th>NIS</th>
-                    <th>Nama Siswa</th>
-                    <th>Kelas</th>
-                    <th>Jurusan</th>
-                    <th>No Tlp</th>
+                    <th>No</th>
+                    <th>Kelompok</th>
+                    <th>Studi Kasus Yang Didapatkan</th>
+                    <th>Anggota</th>
+                    <th>Progres Pengerjaan</th>
+                    <th>Project</th>
+                    <th>Nilai</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>2354325331</td>
-                    <td>Ferdy</td>
-                    <td>XI</td>
-                    <td>RPL</td>
-                    <td>085707210526</td>
+                    <td>1</td>
+                    <td>OneClub</td>
+                    <td>Sekolah merupakan tempat dimana siswa dapat menimba ilmu...</td>
+                    <td>
+                        <ol>
+                          <li>1. saya</li>
+                          <li>2. kamu</li>
+                        </ol>
+                    </td>                      
+                    <td>
+                        <div class="relative pt-1">
+                            <a href="/guru/pjbl/diskusi">
+                                <div class="flex mb-2 items-center justify-between">
+                                  <span class="text-xs font-semibold inline-block py-1 uppercase">Progress</span>
+                                  <span class="text-xs font-semibold inline-block py-1 uppercase">100%/100%</span>
+                              </div>
+                            </a>
+                            <div class="flex mb-2">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="mt-2 px-4 py-2 bg-blue-600 text-center text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                             Lihat
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="openModal()" class="mt-2 px-4 py-2 bg-green-600 text-center text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-300">
+                            Nilai
+                       </a>
+                    </td>
                 </tr>
                 <tr>
-                    <td>2354325332</td>
-                    <td>Septiawan</td>
-                    <td>XI</td>
-                    <td>RPL</td>
-                    <td>085707210522</td>
+                    <td>2</td>
+                    <td>SecondClass</td>
+                    <td>Pahlawan sosok seseorang yang memperjuangkan negara dimana...</td>
+                    <td>
+                        <ol>
+                          <li>1. saya</li>
+                          <li>2. kamu</li>
+                        </ol>
+                    </td>   
+                    <td>
+                        <div class="relative pt-1">
+                            <a href="/guru/pjbl/diskusi">
+                              <div class="flex mb-2 items-center justify-between">
+                                <span class="text-xs font-semibold inline-block py-1 uppercase">Progress</span>
+                                <span class="text-xs font-semibold inline-block py-1 uppercase">87.5%/100%</span>
+                            </div>
+                            </a>
+                            <div class="flex mb-2">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 87.5%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="" class="mt-2 px-4 py-2 bg-blue-600 text-center text-white font-semibold rounded-lg shadow-md cursor-not-allowed">
+                          Lihat
+                        </a>
+                      </td>
+                      <td>
+                        <a href="javascript:void(0)" onclick="openModal()" disabled class="mt-2 px-4 py-2 bg-gray-400 text-center text-white font-semibold rounded-lg shadow-md cursor-not-allowed">
+                          Nilai
+                        </a>
+                      </td>                      
                 </tr>
             </tbody>
         </table>

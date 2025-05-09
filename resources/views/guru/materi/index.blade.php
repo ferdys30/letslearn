@@ -24,16 +24,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>HTML Dasar</td>
-                    <td>html_dasar.pdf</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>CSS Layout</td>
-                    <td>css_layout.docx</td>
-                </tr>
+                @foreach ($materi as $m)
+                    <tr>
+                        <td>1</td>
+                        <td>HTML Dasar</td>
+                        <td>html_dasar.pdf</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </section>

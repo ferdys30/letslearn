@@ -1,86 +1,68 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KuisController;
+use App\Http\Controllers\PjblController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\KelompokController;
+use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\MataPelajaranController;
 
-Route::get('/', function () {
-    return view('index', ['tittle' => 'Dashboard']);
-});
+Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', function () {
-    return view('auth/login', ['tittle' => 'Login']);
-});
+Route::get('/login', [AuthController::class,'login'])->middleware('guest')->name('login');
+Route::post('/login', [AuthController::class,'auth']);
+Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
-Route::get('/regist', function () {
-    return view('auth/regist', ['tittle' => 'Regist']);
-});
+Route::get('/regist', [AuthController::class,'regist'])->middleware('guest');
+Route::post('/regist', [AuthController::class,'store']);
 
-Route::get('/siswa/kelas', function () {
-    return view('siswa/kelas/fitur', ['tittle' => 'Kelas'] );
-});
+// Route::get('/siswa/kelas', function () {
+//     return view('siswa/kelas/fitur', ['tittle' => 'Kelas'] );
+// });
 
-Route::get('/siswa/materi', function () {
-    return view('siswa/materi/index', ['tittle' => 'Materi']);
-});
+Route::get('/siswa/materi', [MateriController::class, 'siswa']);
 
-Route::get('/siswa/kuis', function () {
-    return view('siswa/kuis/index', ['tittle' => 'Kuis']);
-});
+Route::get('/siswa/kuis', [KuisController::class, 'siswa'])->middleware('auth');
 
-Route::get('/siswa/pjbl/kelompok', function () {
-    return view('siswa/pjbl/kelompok', ['tittle' => 'Project Based Learning']);
-});
+Route::get('/siswa/pjbl/kelompok', [KelompokController::class, 'kelompok'] )->middleware('auth');
 
-Route::get('/siswa/pjbl', function () {
-    return view('siswa/pjbl/index', ['tittle' => 'Project Based Learning']);
-});
+Route::get('/siswa/pjbl/{pjbl:slug}', [PjblController::class, 'syntax'])->middleware('auth');
 
-Route::get('/guru', function () {
-    return view('guru/index', ['tittle' => 'Dashboard']);
-});
+
+Route::get('/guru', [HomeController::class,'guru'])->middleware('auth');
 
 // Route::get('/guru/kelas', function () {
 //     return view('guru/kelas/fitur');
 // });
 
-Route::get('/guru/materi', function () {
-    return view('guru/materi/index', ['tittle' => 'Materi']);
-});
+Route::get('/guru/materi',[MateriController::class, 'guru'])->middleware('auth');
 
-Route::get('/guru/kuis', function () {
-    return view('guru/kuis/index', ['tittle' => 'Kuis']);
-});
+Route::get('/guru/kuis', [KuisController::class,'kuis'])->middleware('auth');
 
-Route::get('/guru/kuis/1', function () {
-    return view('guru/kuis/soal', ['tittle' => 'Tambahkan Soal']);
-});
+Route::get('/guru/kuis/{kuis:slug}', [KuisController::class,'soal'])->middleware('auth');
 
-Route::get('/guru/mapel', function () {
-    return view('guru/mapel/index', ['tittle' => 'Kelompok']);
-});
+Route::get('/guru/mapel', [MataPelajaranController::class, 'mapel'])->middleware('auth');
+Route::post('/store/tp', [MataPelajaranController::class, 'store_tp']);
+Route::post('/store/indikator', [MataPelajaranController::class, 'store_indikator']);
 
-Route::get('/guru/syntax', function () {
-    return view('guru/pjbl/syntax', ['tittle' => 'Syntax Project Based Learning']);
-});
+//halaman menambah syntax
+Route::get('/guru/syntax', [PjblController::class,'syntax_guru'])->middleware('auth');
+Route::post('/tambah/syntax', [PjblController::class,'store_syntax']);
 
-Route::get('/guru/pjbl/kelompok', function () {
-    return view('guru/pjbl/kelompok', ['tittle' => 'Kelompok']);
-});
+//halaman kelompok
+Route::get('/guru/pjbl/kelompok',[KelompokController::class,'guru'])->middleware('auth');
 
-Route::get('/guru/pjbl/studi_kasus', function () {
-    return view('guru/pjbl/index', ['tittle' => 'Studi Kasus Project Based Learning']);
-});
+Route::get('/guru/pjbl/studi_kasus', [PjblController::class,'studi_kasus'])->middleware('auth');
+Route::post('/tambah/studi_kasus', [PjblController::class,'store_studi_kasus']);
 
-Route::get('/guru/pjbl/diskusi', function(){ //kurang ini siswa dlu
-    return view('guru/pjbl/diskusi', ['tittle' => 'Diskusi']);
-});
+Route::get('/guru/pjbl/diskusi', [PjblController::class, 'diskusi'])->middleware('auth');
 
-Route::get('/guru/penilaian', function () {
-    return view('guru/penilaian/index', ['tittle' => 'Penilaian']);
-});
+Route::get('/guru/penilaian', [PenilaianController::class,'index'])->middleware('auth');
 
-Route::get('/guru/penilaian/siswa', function () {
-    return view('guru/penilaian/siswa', ['tittle' => 'Penilaian Siswa']);
-});
+Route::get('/guru/penilaian/{user:nama}', [PenilaianController::class,'siswa'])->middleware('auth');
 
 //nnti di delete
 Route::get('/siswa/pjbl/1_2', function () {

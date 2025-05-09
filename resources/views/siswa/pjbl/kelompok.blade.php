@@ -8,10 +8,10 @@
             <!-- Teks -->
             <div class="lg:w-1/2 text-center lg:text-left">
                 <h1 class="text-4xl font-bold text-gray-800 leading-tight">
-                    Kelas <span class="text-purple-600">Pemograman Website</span>
+                    Kelas <span class="text-purple-600">{{ $mapel->nama_mapel }}</span>
                 </h1>
                 <p class="mt-4 text-gray-600">
-                    Pelajari cara membangun website interaktif menggunakan HTML, CSS, dan JavaScript.
+                    {{ $mapel->deskripsi_mapel }}
                 </p>
             </div>
             <!-- Gambar -->
@@ -24,50 +24,77 @@
 
     <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Kelompok Pelajaran Pemrograman Website</h2>
+            <h2 class="text-xl font-semibold text-gray-800">Kelompok Pelajaran {{ $mapel->nama_mapel }}</h2>
             <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Kelompok</button>
         </div>
         <table id="myTable" class="display w-full table-auto text-sm">
             <thead class="bg-gray-200">
                 <tr>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-800">Urutan Kelompok</th>
+                    {{-- <th class="px-4 py-2 text-left font-semibold text-gray-800">Urutan Kelompok</th> --}}
                     <th class="px-4 py-2 text-left font-semibold text-gray-800">Nama Kelompok</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-800">Maksimal Anggota</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-800">Nama Anggota</th>
                     <th class="px-4 py-2 text-left font-semibold text-gray-800">Jumlah Anggota</th>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-800">Progress</th>
                     <th class="px-4 py-2 text-left font-semibold text-gray-800">Opsi</th>
                 </tr>
             </thead>
+            
             <tbody class="bg-white">
-                <!-- Row 1 -->
+                @foreach ($kelompok as $klmpk)
+                @php
+                    $anggotaCount = $anggota->where('id_kelompok', $klmpk->id)->count();
+                    $total = $klmpk->jumlah_kelompok;
+                    $percentage = $total > 0 ? round(($anggotaCount / $total) * 100) : 0;
+                    $progressColor = $percentage >= 100 ? 'bg-green-600' : 'bg-blue-600';
+                @endphp
                 <tr class="border-t hover:bg-gray-50">
-                    <td class="px-4 py-2">1</td>
-                    <td class="px-4 py-2">OneClub</td>
-                    <td class="px-4 py-2">3</td>
+                    {{-- <td class="px-4 py-2">1</td> --}}
+                    <td class="px-4 py-2">{{ $klmpk->nama_kelompok }}</td>
+                    <td class="px-4 py-2">{{ $klmpk->jumlah_kelompok }}</td>
+                    <td>
+                        <ol>
+                            @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
+                                <li>{{ $loop->iteration }}. {{ $item->user->name }}</li>
+                            @endforeach
+                        </ol>
+                    </td>   
                     <td class="px-4 py-2">
                         <div class="relative pt-1">
                             <div class="flex mb-2 items-center justify-between">
                                 <span class="text-xs font-semibold inline-block py-1 uppercase">Jumlah</span>
-                                <span class="text-xs font-semibold inline-block py-1 uppercase">1/3</span>
+                                <span class="text-xs font-semibold inline-block py-1 uppercase">
+                                    {{ $anggotaCount }}/{{ $total }}
+                                </span>
                             </div>
                             <div class="flex mb-2">
                                 <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 33%"></div>
+                                    <div class="{{ $progressColor }} h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td class="px-4 py-2">
-                        <a href="/siswa/pjbl" class="text-green-600 hover:text-green-800 hover:underline">
-                            Lihat
-                        </a>
-                    </td>
+                        @if ($anggotaCount >= $klmpk->jumlah_kelompok)
+                            <a href="/siswa/pjbl" class="text-green-600 hover:text-green-800 hover:underline">
+                                Lihat
+                            </a>
+                        @endif
+                    </td>                    
                 </tr>
-        
+                @endforeach
+
+{{--         
                 <!-- Row 2 -->
                 <tr class="border-t hover:bg-gray-50">
                     <td class="px-4 py-2">2</td>
                     <td class="px-4 py-2">SecondClass</td>
                     <td class="px-4 py-2">3</td>
+                    <td>
+                        <ol>
+                          <li>1. saya</li>
+                          <li>2. kamu</li>
+                        </ol>
+                    </td>   
                     <td class="px-4 py-2">
                         <a href="/guru/kuis/1" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
                             Masuk Kelas
@@ -85,6 +112,12 @@
                     <td class="px-4 py-2">3</td>
                     <td class="px-4 py-2">ThirdTeam</td>
                     <td class="px-4 py-2">3</td>
+                    <td>
+                        <ol>
+                          <li>1. saya</li>
+                          <li>2. kamu</li>
+                        </ol>
+                    </td>   
                     <td class="px-4 py-2">
                         <a href="/guru/kuis/1" class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed" disabled>
                             Masuk Kelas
@@ -95,7 +128,7 @@
                             Lihat
                         </a>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
         </table>
         

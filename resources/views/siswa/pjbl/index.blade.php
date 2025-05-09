@@ -17,6 +17,7 @@
     </style>
 <x-layout-siswa>
     <x-slot:tittle>{{ $tittle }}</x-slot:tittle>
+    {{-- @dd($pjbl); --}}
     <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-6">
         <!-- Card Siswa 1 -->
         <div class="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4">
@@ -130,25 +131,109 @@
         </div>
     </div>
     
-    <div class="w-full h-screen bg-white shadow-md rounded-none p-8 mt-2 relative">
-        <!-- Judul -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Studi Kasus: Pemrograman Website</h2>
+    <div class="w-full h-300 bg-white shadow-md rounded-none p-8 mt-2 relative">
+        <!-- Judul dan Timer -->
+        <div class="flex justify-between items-center">
+            <!-- Judul -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ $pjbl->nama_syntax }}: {{ $pjbl->mata_pelajaran->nama_mapel }}</h2>
+    
+            <!-- Countdown Timer -->
+            <div id="countdown-timer" class="bg-gray-800 text-white px-4 py-2 rounded shadow">
+                Sisa waktu: {{ floor($pjbl->waktu / 60) }}:{{ str_pad($pjbl->waktu % 60, 2, '0', STR_PAD_LEFT) }}
+            </div>
+        </div>
       
         <!-- Isi Studi Kasus -->
         <p class="text-gray-700 text-lg leading-relaxed max-w-4xl">
-          Anda diminta untuk membuat sebuah website portofolio pribadi yang menampilkan informasi tentang diri Anda, 
-          proyek yang pernah dikerjakan, serta tautan ke media sosial. Gunakan HTML, CSS, dan JavaScript untuk membuat 
-          tampilan yang menarik dan responsif. Pastikan website Anda dapat dibuka di berbagai perangkat dan memiliki 
-          navigasi yang mudah digunakan.
+          {{ $pjbl->isi_syntax }}
         </p>
+
+        <form action="#" method="POST" enctype="multipart/form-data">
+            @csrf
+        
+            @if ($pjbl->pengumpulan == 1)
+                <!-- Textarea untuk jawaban teks -->
+                <label for="jawaban" class="block mb-2 text-sm font-medium text-gray-700">Jawaban:</label>
+                <textarea name="jawaban" id="jawaban" rows="5"
+                          class="w-full p-3 border rounded-lg focus:outline-none focus:ring"
+                          placeholder="Tulis jawabanmu di sini..."></textarea>
+        
+            @elseif ($pjbl->pengumpulan == 2)
+                <!-- Input file untuk upload -->
+                <label for="file" class="block mb-2 text-sm font-medium text-gray-700">Upload File:</label>
+                <input type="file" name="file" id="file"
+                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
+            @endif
+        
+            @if ($pjbl->pengumpulan === 1 || $pjbl->pengumpulan === 2)
+                <button type="submit"
+                        class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-semibold">
+                    Kirim Jawaban
+                </button>
+            @endif
+        </form>
+        
       
         <!-- Tombol Next -->
-        <div class="absolute bottom-8 right-8">
-          <a href="/siswa/pjbl/1_2" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
-            Next →
-          </a>
-        </div>
-      </div>
-      
+        {{-- <div class="absolute bottom-8 right-8">
+            <a href="/siswa/pjbl/1_2" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
+                Next →
+            </a>
+        </div> --}}
+    </div>
+    <script>
+       window.onload = function() {
+        let waktu = @json($pjbl->waktu);
+        let countdownElement = document.getElementById('countdown-timer');
+
+        if (!countdownElement) {
+            console.error('Elemen countdown-timer tidak ditemukan');
+            return;
+        }
+
+        let timer = setInterval(function () {
+            let minutes = Math.floor(waktu / 60);
+            let seconds = waktu % 60;
+
+            countdownElement.textContent = `Sisa waktu: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            if (waktu <= 0) {
+                clearInterval(timer);
+                @if ($next_slug)
+                    window.location.href = "/siswa/pjbl/{{ $next_slug }}";
+                @else
+                    window.location.href = "/siswa/pjbl/selesai"; // misalnya halaman akhir
+                @endif
+                // fetch('/siswa/pjbl/selesai', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                //     },
+                //     body: JSON.stringify({
+                //         pjbl_id: {{ $pjbl->id }},
+                //         user_id: {{ auth()->id() }},
+                //         status: 'selesai',
+                //         waktu_habis: true
+                //     })
+                // })
+                // .then(response => {
+                //     // Redirect setelah sukses
+                //     window.location.href = "/siswa/pjbl/1_2";
+                // })
+                // .catch(error => {
+                //     console.error('Gagal menyimpan data:', error);
+                //     // Tetap redirect meskipun gagal
+                //     window.location.href = "/siswa/pjbl/1_2";
+                // });
+            }
+
+            waktu--;
+        }, 1000);
+    };
+
+    </script>
+    
+    
 
 </x-layout-siswa>

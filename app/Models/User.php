@@ -6,11 +6,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $with= ['mata_pelajaran','anggota_kelompok','diskusi','pengumpulan','penilaian'];
 
     /**
      * The attributes that are mass assignable.
@@ -18,8 +22,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nis','nip','nama','foto','jurusan','kelas','alamat',
         'email',
+        'username',
         'password',
     ];
 
@@ -44,5 +49,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mata_pelajaran(): HasMany
+    {
+        return $this->hasMany(mata_pelajaran::class, 'id_user');
+    }
+
+    public function anggota_kelompok(): HasMany
+    {
+        return $this->hasMany(anggota_kelompok::class,'id_user');
+    }
+
+    public function diskusi(): HasMany
+    {
+        return $this->hasMany(diskusi::class,'id_user');
+    }
+
+    public function pengumpulan(): HasMany
+    {
+        return $this->hasMany(pengumpulan::class,'id_user');
+    }
+
+    public function penilaian(): HasMany
+    {
+        return $this->hasMany(penilaian::class,'id_user');
     }
 }
