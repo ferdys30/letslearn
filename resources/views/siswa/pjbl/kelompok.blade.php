@@ -25,7 +25,9 @@
     <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-800">Kelompok Pelajaran {{ $mapel->nama_mapel }}</h2>
-            <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Kelompok</button>
+            @if (!auth()->user()->anggota_kelompok()->exists())
+                <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Kelompok</button>
+            @endif
         </div>
         <table id="myTable" class="display w-full table-auto text-sm">
             <thead class="bg-gray-200">
@@ -40,96 +42,69 @@
             </thead>
             
             <tbody class="bg-white">
-                @foreach ($kelompok as $klmpk)
                 @php
-                    $anggotaCount = $anggota->where('id_kelompok', $klmpk->id)->count();
-                    $total = $klmpk->jumlah_kelompok;
-                    $percentage = $total > 0 ? round(($anggotaCount / $total) * 100) : 0;
-                    $progressColor = $percentage >= 100 ? 'bg-green-600' : 'bg-blue-600';
+                    // Cari id_kelompok milik user yang sedang login
+                    $userKelompok = $anggota->firstWhere('id_user', auth()->id())?->id_kelompok;
                 @endphp
-                <tr class="border-t hover:bg-gray-50">
-                    {{-- <td class="px-4 py-2">1</td> --}}
-                    <td class="px-4 py-2">{{ $klmpk->nama_kelompok }}</td>
-                    <td class="px-4 py-2">{{ $klmpk->jumlah_kelompok }}</td>
-                    <td>
-                        <ol>
-                            @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
-                                <li>{{ $loop->iteration }}. {{ $item->user->name }}</li>
-                            @endforeach
-                        </ol>
-                    </td>   
-                    <td class="px-4 py-2">
-                        <div class="relative pt-1">
-                            <div class="flex mb-2 items-center justify-between">
-                                <span class="text-xs font-semibold inline-block py-1 uppercase">Jumlah</span>
-                                <span class="text-xs font-semibold inline-block py-1 uppercase">
-                                    {{ $anggotaCount }}/{{ $total }}
-                                </span>
-                            </div>
-                            <div class="flex mb-2">
-                                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="{{ $progressColor }} h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                @foreach ($kelompok as $klmpk)
+                    @php
+                        $anggotaCount = $anggota->where('id_kelompok', $klmpk->id)->count();
+                        $total = $klmpk->jumlah_kelompok;
+                        $percentage = $total > 0 ? round(($anggotaCount / $total) * 100) : 0;
+                        $progressColor = $percentage >= 100 ? 'bg-green-600' : 'bg-blue-600';
+                    @endphp
+                    {{-- <div class="text-sm text-gray-500">ID Kelompok User Login: {{ $userKelompok ?? 'Belum masuk kelompok' }}</div> --}}
+
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ $klmpk->nama_kelompok }}</td>
+                        <td class="px-4 py-2">{{ $klmpk->jumlah_kelompok }}</td>
+                        <td>
+                            <ol>
+                                @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
+                                    <li>{{ $loop->iteration }}. {{ $item->user->nama }}</li>
+                                @endforeach
+                            </ol>
+                        </td>   
+                        <td class="px-4 py-2">
+                            <div class="relative pt-1">
+                                <div class="flex mb-2 items-center justify-between">
+                                    <span class="text-xs font-semibold inline-block py-1 uppercase">Jumlah</span>
+                                    <span class="text-xs font-semibold inline-block py-1 uppercase">
+                                        {{ $anggotaCount }}/{{ $total }}
+                                    </span>
+                                </div>
+                                <div class="flex mb-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="{{ $progressColor }} h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-2">
-                        @if ($anggotaCount >= $klmpk->jumlah_kelompok)
-                            <a href="/siswa/pjbl" class="text-green-600 hover:text-green-800 hover:underline">
-                                Lihat
-                            </a>
-                        @endif
-                    </td>                    
-                </tr>
+                        </td>
+                        <td class="px-4 py-2 text-center">
+                            @if ($userKelompok === $klmpk->id && $anggotaCount == $klmpk->jumlah_kelompok &&  $klmpk->studi_kasus->isNotEmpty())
+                                <a href="/siswa/pjbl" class="bg-green-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-green-700 transition">
+                                    Lihat
+                                </a>
+                            @elseif (is_null($userKelompok) && $anggotaCount < $klmpk->jumlah_kelompok)
+                                <form action="/gabung/kelompok" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_kelompok" value="{{ $klmpk->id }}">
+                                    <button type="submit" class="bg-blue-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-blue-700 transition">
+                                        Gabung Kelompok
+                                    </button>
+                                </form>
+                            @elseif (is_null($userKelompok))
+                                <span class="text-gray-500 italic">Penuh</span>
+                            @elseif ($userKelompok === $klmpk->id && $anggotaCount == $klmpk->jumlah_kelompok && $klmpk->studi_kasus->isEmpty())
+                                <span class="text-gray-500 italic">Menunggu Studi Kasus</span>
+                            @else
+                                <span class="text-gray-500 italic">Tunggu Penuh</span>
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
-
-{{--         
-                <!-- Row 2 -->
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="px-4 py-2">2</td>
-                    <td class="px-4 py-2">SecondClass</td>
-                    <td class="px-4 py-2">3</td>
-                    <td>
-                        <ol>
-                          <li>1. saya</li>
-                          <li>2. kamu</li>
-                        </ol>
-                    </td>   
-                    <td class="px-4 py-2">
-                        <a href="/guru/kuis/1" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
-                            Masuk Kelas
-                        </a>
-                    </td>
-                    <td class="px-4 py-2">
-                        <a href="/siswa/pjbl" class="text-green-600 hover:text-green-800 hover:underline">
-                            Lihat
-                        </a>
-                    </td>
-                </tr>
-        
-                <!-- Row 3 -->
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="px-4 py-2">3</td>
-                    <td class="px-4 py-2">ThirdTeam</td>
-                    <td class="px-4 py-2">3</td>
-                    <td>
-                        <ol>
-                          <li>1. saya</li>
-                          <li>2. kamu</li>
-                        </ol>
-                    </td>   
-                    <td class="px-4 py-2">
-                        <a href="/guru/kuis/1" class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed" disabled>
-                            Masuk Kelas
-                        </a>
-                    </td>
-                    <td class="px-4 py-2">
-                        <a href="/siswa/pjbl" class="text-green-600 hover:text-green-800 hover:underline">
-                            Lihat
-                        </a>
-                    </td>
-                </tr> --}}
             </tbody>
+
         </table>
         
     </div>
@@ -137,25 +112,19 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Syntax</h3>
 
-            <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="/store/kelompok" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
-
-                <!-- Urutan Syntax -->
+                <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
+                <!-- Nama Kelompok -->
                 <div>
-                    <label for="urutan_syntax" class="block mb-2 text-sm font-medium text-gray-900">Urutan Syntax</label>
-                    <input type="number" name="urutan_syntax" id="urutan_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 1, 2, 3..." required>
+                    <label for="nama_kelompok" class="block mb-2 text-sm font-medium text-gray-900">Nama Kelompok</label>
+                    <input type="text" name="nama_kelompok" id="nama_kelompok" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: Kelompok A" required>
                 </div>
 
-                <!-- Judul Syntax -->
+                <!-- Jumlah Kelompok -->
                 <div>
-                    <label for="judul_syntax" class="block mb-2 text-sm font-medium text-gray-900">Judul Syntax</label>
-                    <input type="text" name="judul_syntax" id="judul_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: HTML Dasar" required>
-                </div>
-
-                <!-- Slug Syntax -->
-                <div>
-                    <label for="slug_syntax" class="block mb-2 text-sm font-medium text-gray-900">Slug Syntax</label>
-                    <input type="text" name="slug_syntax" id="slug_syntax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: html-dasar" required>
+                    <label for="jumlah_kelompok" class="block mb-2 text-sm font-medium text-gray-900">Jumlah Kelompok</label>
+                    <input type="number" name="jumlah_kelompok" id="jumlah_kelompok" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 5" required>
                 </div>
 
                 <!-- Tombol Aksi -->

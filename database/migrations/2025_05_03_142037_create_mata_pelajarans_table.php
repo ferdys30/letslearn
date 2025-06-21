@@ -20,6 +20,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('id_user');
             // $table->foreign('id_user')->references('id')->on('users');
             $table->string('nama_mapel');
+            $table->string('kelas');
             $table->string('slug');
             $table->string('deskripsi_mapel');
             $table->timestamps();

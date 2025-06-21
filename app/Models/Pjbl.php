@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pjbl extends Model
 {
-    protected $fillable = ['urutan','id_mapel','nama_syntax','slug','isi_syntax','penjelasan','pengumpulan','waktu'];
+    protected $fillable = ['urutan','id_mapel','nama_syntax','slug','isi_syntax','penjelasan','pengumpulan','waktu','waktu_mulai'];
 
     public function mata_pelajaran(): BelongsTo
     {

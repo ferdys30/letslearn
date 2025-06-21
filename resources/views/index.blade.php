@@ -38,7 +38,7 @@
             <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
               <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $mapel->nama_mapel }}</h3>
               <p class="text-gray-600 mt-2">{{ $mapel->deskripsi_mapel }}</p>
-              <a href="/siswa/pjbl/kelompok" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
+              <a href="/siswa/kelas/fitur/{{ $mapel->slug }}" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
                   Lihat Kelas
               </a>
             </div>

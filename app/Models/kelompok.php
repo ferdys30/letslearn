@@ -35,4 +35,9 @@ class kelompok extends Model
     {
         return $this->hasMany(studi_kasus::class,'id_kelompok');
     }
+
+        public function Posisi(): HasMany
+    {
+        return $this->hasMany(Posisi::class,'id_kelompok');
+    }
 }

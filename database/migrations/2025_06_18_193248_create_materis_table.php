@@ -11,20 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelompoks', function (Blueprint $table) {
+        Schema::create('materis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_mapel')->constrained(
                 table: 'mata_pelajarans',
                 indexName: 'id'
             );
-            $table->foreignId('id_posisi')->constrained(
-                table: 'Posisi',
-                indexName: 'id'
-            );
-            // $table->unsignedBigInteger('id_user');
-            // $table->foreign('id_user')->references('id')->on('users');
-            $table->string('nama_kelompok');
-            $table->integer('jumlah_kelompok');
+            $table->string('urutan_materi');
+            $table->string('judul');
+            $table->string('deskripsi_materi');
+            $table->string('dokumen_materi');
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kelompoks');
+        Schema::dropIfExists('materis');
     }
 };

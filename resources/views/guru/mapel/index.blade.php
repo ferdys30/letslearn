@@ -2,8 +2,9 @@
     {{-- @dd($mapel) --}}
     <!-- CSS DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Section: Selamat Datang -->
+    <!-- Section: Deskripsi Mata Pelajaran -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Mata Pelajaran {{ $mapel->nama_mapel }}</h1>
         <p class="text-gray-600 mt-1 flex justify-between items-center">
@@ -12,9 +13,11 @@
         </p>
     </section>   
     
+
+    {{-- Tujuan Pembelajaran --}}
     <section x-data="{ showModal: false }" class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <h2 class="text-3xl font-bold text-gray-800 text-left mb-4">Tujuan Pembelajaran</h2>
-    
+
         <div class="bg-white shadow-lg rounded-2xl p-6 w-full text-gray-800">
             <ul class="space-y-3 mb-6">
                 @forelse($tujuan_pembelajaran as $index => $tp)
@@ -28,24 +31,26 @@
                     </li>
                 @endforelse
 
-    
-                <!-- Tombol Tambah -->
                 <li class="flex justify-between items-center bg-gray-50 p-3 rounded-md shadow-sm hover:bg-gray-100 transition">
                     <span class="text-gray-500 italic">+ Tambah Data</span>
                     <button @click="showModal = true" class="text-sm text-green-600 hover:underline font-medium">Tambah</button>
                 </li>
             </ul>
         </div>
-    
-        <!-- Modal -->
-        <div x-show="showModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+        <!-- Modal Tambah Tujuan -->
+        <div 
+            x-show="showModal" 
+            x-transition 
+            x-cloak 
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        >
             <div @click.away="showModal = false" class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold text-gray-800">Tambah Tujuan Pembelajaran</h2>
                     <button @click="showModal = false" class="text-gray-600 hover:text-gray-900 text-2xl">&times;</button>
                 </div>
-    
-                <!-- Form Tambah Tujuan -->
+
                 <form action="/store/tp" method="POST" class="space-y-4">
                     @csrf
                     <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
@@ -63,13 +68,15 @@
             </div>
         </div>
     </section>
+
     
-    <!-- Tabel -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
+    <!-- Tabel Indikator Penilaian -->
+    <section x-data="{ showModal: false }" class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-3xl font-bold text-gray-800 text-left">Indikator Penilaian</h2>
-            <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Indikator</button>
+            <button @click="showModal = true" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Indikator</button>
         </div>
+
         <table id="myTable" class="display">
             <thead>
                 <tr>
@@ -88,17 +95,10 @@
                         <td>{{ $i->indikator_penilaian }}</td>
                         <td>
                             @switch($i->skema)
-                                @case(1)
-                                    Kognitif
-                                    @break
-                                @case(2)
-                                    Psikomotorik
-                                    @break
-                                @case(3)
-                                    Afektif
-                                    @break
-                                @default
-                                    -
+                                @case(1) Kognitif @break
+                                @case(2) Psikomotorik @break
+                                @case(3) Afektif @break
+                                @default -
                             @endswitch
                         </td>
                         <td>{{ $i->skala_1 }}</td>
@@ -110,13 +110,17 @@
                 @endforeach
             </tbody>
         </table>
-    
-        <!-- Modal -->
-        <div id="modalForm" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative max-h-[80vh] overflow-y-auto">
+
+        <!-- Modal Tambah Indikator -->
+        <div 
+            x-show="showModal" 
+            x-transition 
+            x-cloak 
+            class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+        >
+            <div @click.away="showModal = false" class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative max-h-[80vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Indikator Penilaian</h3>
-    
-                <form action="/store/indikator" method="POST" class="space-y-4">
+                    <form action="/store/indikator" method="POST" class="space-y-4">
                     @csrf
                     <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
                     <div>
@@ -173,12 +177,12 @@
                         <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Simpan</button>
                     </div>
                 </form>
-    
-                <!-- Tombol Close -->
-                <button onclick="toggleModal(false)" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg font-bold">&times;</button>
+
+                <button @click="showModal = false" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg font-bold">&times;</button>
             </div>
         </div>
     </section>
+
     
     <script>
         function toggleModal(isOpen) {

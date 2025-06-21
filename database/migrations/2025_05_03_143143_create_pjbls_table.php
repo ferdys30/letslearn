@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('penjelasan');
             $table->integer('pengumpulan')->nullable();//type pengumpulan
             $table->integer('waktu');//type pengumpulan
+            $table->dateTime('waktu_mulai');
             $table->timestamps();
         });
     }

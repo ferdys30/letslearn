@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class User extends Authenticatable
@@ -61,9 +62,9 @@ class User extends Authenticatable
         return $this->hasMany(mata_pelajaran::class, 'id_user');
     }
 
-    public function anggota_kelompok(): HasMany
+    public function anggota_kelompok(): HasOne
     {
-        return $this->hasMany(anggota_kelompok::class,'id_user');
+        return $this->hasOne(anggota_kelompok::class, 'id_user');
     }
 
     public function diskusi(): HasMany

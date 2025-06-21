@@ -19,16 +19,18 @@
             <thead>
                 <tr>
                     <th>Urutan Materi</th>
+                    <th>Judul Materi</th>
                     <th>Deskripsi Materi</th>
                     <th>Dokumen Materi (PDF/Word)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($materi as $m)
-                    <tr>
-                        <td>1</td>
-                        <td>HTML Dasar</td>
-                        <td>html_dasar.pdf</td>
+                     <tr>
+                        <td>{{ $m->urutan_materi }}</td>
+                        <td>{{ $m->judul }}</td>
+                        <td>{{ $m->deskripsi_materi }}</td>
+                        <td>{{ basename($m->dokumen_materi) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -43,10 +45,17 @@
             <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
+                <input type="hidden" name="id_mapel" value="{{ request()->get('id_mapel', 1) }}"> {{-- Sementara id_mapel=1 --}}
                 <!-- Input Urutan Materi -->
                 <div>
                     <label for="urutan_materi" class="block mb-2 text-sm font-medium text-gray-900">Urutan Materi</label>
                     <input type="number" name="urutan_materi" id="urutan_materi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: 1, 2, 3..." required>
+                </div>
+
+                <!-- Textarea judul Materi -->
+                <div>
+                    <label for="judul_materi" class="block mb-2 text-sm font-medium text-gray-900">Judul Materi</label>
+                    <input type="text" name="judul_materi" id="judul_materi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" placeholder="Contoh: HTML, CSS , dll" required></textarea>
                 </div>
 
                 <!-- Textarea Deskripsi Materi -->

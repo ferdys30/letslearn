@@ -27,6 +27,7 @@ return new class extends Migration
             );
             $table->string('deskriptif')->nullable();
             $table->string('file_pengumpulan')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

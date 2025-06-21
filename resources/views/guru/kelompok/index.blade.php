@@ -6,7 +6,7 @@
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
       <h2 class="text-3xl font-bold text-gray-800 text-left">Data Kelompok</h2>
       <table id="myTable" class="display">
-          <thead>
+          <thead> 
               <tr>
                   {{-- <th>No</th> --}}
                   <th>Kelompok</th>

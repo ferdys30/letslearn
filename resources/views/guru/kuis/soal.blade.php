@@ -24,16 +24,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Apa itu tag &lt;html&gt;?</td>
-                    <td>A</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Untuk apa tag &lt;head&gt; digunakan?</td>
-                    <td>B</td>
-                </tr>
+                @foreach($kuis->soals as $soal)
+                    <tr>
+                        <td>{{ $soal->urutan }}</td>
+                        <td>{{ $soal->pertanyaan }}</td>
+                        <td>{{ strtoupper($soal->jawaban_benar) }}</td>
+                    </tr>
+                @endforeach
+
             </tbody>
         </table>
     </section>
@@ -45,7 +43,7 @@
             <div class="bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto p-6 relative">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Soal</h3>
 
-                <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ url('/guru/kuis/' . $kuis->id . '/soal') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Urutan Soal -->

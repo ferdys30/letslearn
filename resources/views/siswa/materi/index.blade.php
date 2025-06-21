@@ -25,50 +25,32 @@
     <div class="flex mt-6" x-data="{ tab: 'materi1' }">
         <!-- Sidebar Navigasi -->
         <div class="w-1/4 space-y-2">
-            <button @click="tab = 'materi1'" :class="{ 'bg-purple-600 text-white': tab === 'materi1' }" class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
-                HTML Dasar
+            @foreach($materi as $index => $item)
+            <button @click="tab = 'materi{{ $index }}'"
+                :class="{ 'bg-purple-600 text-white': tab === 'materi{{ $index }}' }"
+                class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
+                {{ $item->judul }}
             </button>
-            <button @click="tab = 'materi2'" :class="{ 'bg-purple-600 text-white': tab === 'materi2' }" class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
-                CSS Layout
-            </button>
-            <button @click="tab = 'materi3'" :class="{ 'bg-purple-600 text-white': tab === 'materi3' }" class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
-                Materi 3
-            </button>
-            <button @click="tab = 'materi4'" :class="{ 'bg-purple-600 text-white': tab === 'materi4' }" class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
-                Materi 4
-            </button>
-            <button @click="tab = 'materi5'" :class="{ 'bg-purple-600 text-white': tab === 'materi5' }" class="block w-full text-left px-4 py-3 rounded-lg bg-gray-200 hover:bg-purple-700 hover:text-white transition duration-300 ease-in-out">
-                Materi 5
-            </button>
+            @endforeach
         </div>
+
 
         <!-- Konten Tab -->
         <div class="w-3/4 p-6 bg-gray-50 rounded-lg shadow-inner">
-            <div x-show="tab === 'materi1'">
-                <h2 class="text-xl font-semibold text-gray-700">HTML Dasar</h2>
-                <p class="mt-2 text-gray-600">Isi materi 1...</p>
-            </div>
+            @foreach($materi as $index => $item)
+            <div x-show="tab === 'materi{{ $index }}'">
+                <h2 class="text-xl font-semibold text-gray-700">{{ $item->urutan_materi }}</h2>
+                <p class="mt-2 text-gray-600">{{ $item->deskripsi_materi }}</p>
 
-            <div x-show="tab === 'materi2'">
-                <h2 class="text-xl font-semibold text-gray-700">HTML Dasar</h2>
-                <p class="mt-2 text-gray-600">Isi materi 2...</p>
+                @if($item->dokumen_materi)
+                    <div class="mt-4">
+                        <iframe src="{{ asset('storage/' . $item->dokumen_materi) }}" class="w-full h-[500px] border rounded" frameborder="0"></iframe>
+                    </div>
+                @endif
             </div>
-
-            <div x-show="tab === 'materi3'">
-                <h2 class="text-xl font-semibold text-gray-700">Materi 3</h2>
-                <p class="mt-2 text-gray-600">Isi materi 3...</p>
-            </div>
-
-            <div x-show="tab === 'materi4'">
-                <h2 class="text-xl font-semibold text-gray-700">Materi 4</h2>
-                <p class="mt-2 text-gray-600">Isi materi 4...</p>
-            </div>
-
-            <div x-show="tab === 'materi5'">
-                <h2 class="text-xl font-semibold text-gray-700">Materi 5</h2>
-                <p class="mt-2 text-gray-600">Isi materi 5...</p>
-            </div>
+            @endforeach
         </div>
+
     </div>
   </div>
 </x-layout-siswa>

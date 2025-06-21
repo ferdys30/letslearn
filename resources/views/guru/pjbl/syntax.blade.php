@@ -88,6 +88,15 @@
                     </select>
                 </div>
     
+                <!-- Waktu Mulai -->
+                <div>
+                    <label for="waktu_mulai" class="block mb-2 text-sm font-medium text-gray-900">Waktu Pengerjaan</label>
+                    <input type="datetime-local" name="waktu_mulai" id="waktu_mulai" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                        required>
+                </div>
+
+
                 <!-- Waktu Upload -->
                 <div>
                     <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900">Waktu Pengerjaan</label>

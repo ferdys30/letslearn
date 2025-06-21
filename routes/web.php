@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\PjblController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\PenilaianController;
@@ -23,26 +24,39 @@ Route::post('/regist', [AuthController::class,'store']);
 //     return view('siswa/kelas/fitur', ['tittle' => 'Kelas'] );
 // });
 
+Route::get('/siswa/kelas/fitur/{mapel:id}', [KelasController::class, 'fitur'])->middleware('auth');
+
 Route::get('/siswa/materi', [MateriController::class, 'siswa']);
 
-Route::get('/siswa/kuis', [KuisController::class, 'siswa'])->middleware('auth');
+Route::get('/siswa/kuis', [KuisController::class, 'index'])->name('siswa.kuis.index');
+Route::get('/siswa/kuis/{kuis}', [KuisController::class, 'show'])->name('siswa.kuis.show');
+Route::post('/siswa/kuis/{kuis}/submit', [KuisController::class, 'submit'])->name('siswa.kuis.submit');
+
+// GET semua kuis untuk mapel tertentu
+// Route::get('/siswa/kuis/{id_mapel}', [KuisController::class, 'siswa'])->name('siswa.kuis');
+
 
 Route::get('/siswa/pjbl/kelompok', [KelompokController::class, 'kelompok'] )->middleware('auth');
+Route::post('/store/kelompok', [KelompokController::class, 'store_kelompok']);
+Route::post('/gabung/kelompok', [KelompokController::class, 'gabung_kelompok']);
 
-Route::get('/siswa/pjbl/{pjbl:slug}', [PjblController::class, 'syntax'])->middleware('auth');
+Route::get('/siswa/pjbl', [PjblController::class, 'index']);
+Route::get('/siswa/pjbl/{pjbl:slug}', [PjblController::class, 'syntax']);
+Route::post('/pengumpulan/syntax', [PjblController::class, 'pengumpulan_siswa_syntax'])->name('pengumpulan.syntax');
 
 
 Route::get('/guru', [HomeController::class,'guru'])->middleware('auth');
 
-// Route::get('/guru/kelas', function () {
-//     return view('guru/kelas/fitur');
-// });
+Route::get('/guru/materi', [MateriController::class, 'guru'])->middleware('auth');
+Route::post('/guru/materi', [MateriController::class, 'store'])->middleware('auth'); // 👉 Route untuk menyimpan data
+// Route::get('/guru/materi/{id_mapel}', [MateriController::class, 'byMapel'])->middleware('auth'); // 👉 Route untuk data berdasarkan mapel
 
-Route::get('/guru/materi',[MateriController::class, 'guru'])->middleware('auth');
+// Menampilkan daftar kuis
+Route::get('/guru/kuis', [KuisController::class, 'kuis'])->middleware('auth');
+Route::post('/guru/kuis', [KuisController::class, 'store'])->middleware('auth');
 
-Route::get('/guru/kuis', [KuisController::class,'kuis'])->middleware('auth');
-
-Route::get('/guru/kuis/{kuis:slug}', [KuisController::class,'soal'])->middleware('auth');
+Route::get('/guru/kuis/{kuis}/soal', [KuisController::class, 'soal'])->name('kuis.soal')->middleware('auth');
+Route::post('/guru/kuis/{kuis:id}/soal', [KuisController::class, 'store_soal'])->middleware('auth');
 
 Route::get('/guru/mapel', [MataPelajaranController::class, 'mapel'])->middleware('auth');
 Route::post('/store/tp', [MataPelajaranController::class, 'store_tp']);
@@ -54,6 +68,9 @@ Route::post('/tambah/syntax', [PjblController::class,'store_syntax']);
 
 //halaman kelompok
 Route::get('/guru/pjbl/kelompok',[KelompokController::class,'guru'])->middleware('auth');
+Route::get('/guru/pjbl/kelompok/{kelompok:nama}',[PjblController::class,'guru_syntax'])->middleware('auth');
+Route::put('/guru/pjbl/validasi/{id}', [PjblController::class, 'validasiPengumpulan'])
+    ->name('guru.pjbl.validasi');
 
 Route::get('/guru/pjbl/studi_kasus', [PjblController::class,'studi_kasus'])->middleware('auth');
 Route::post('/tambah/studi_kasus', [PjblController::class,'store_studi_kasus']);

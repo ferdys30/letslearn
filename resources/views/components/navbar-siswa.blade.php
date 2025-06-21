@@ -9,16 +9,18 @@
         <!-- Menu + Login (Mepet Kanan) -->
         <div class="hidden md:flex items-center ml-auto space-x-4">
             <x-nav-link-siswa href="/" :active="request()->is('/')">Home</x-nav-link-siswa>
-            <x-nav-link-siswa href="/siswa/materi" :active="request()->is('siswa/materi')">Materi</x-nav-link-siswa>
-            {{-- <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa> --}}
-            <x-nav-link-siswa href="/siswa/pjbl/kelompok" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa>
-            <x-nav-link-siswa href="/siswa/kuis" :active="request()->is('siswa/kuis')">Kuis</x-nav-link-siswa>
+            @auth
+                <x-nav-link-siswa href="/siswa/materi" :active="request()->is('siswa/materi')">Materi</x-nav-link-siswa>
+                {{-- <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa> --}}
+                <x-nav-link-siswa href="/siswa/pjbl/kelompok" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa>
+                <x-nav-link-siswa href="/siswa/kuis" :active="request()->is('siswa/kuis')">Kuis</x-nav-link-siswa>
+            @endauth
 
             @auth
                 <div class="relative" x-data="{ isOpen: false }">
                     <button @click="isOpen = !isOpen" class="relative flex items-center text-sm focus:outline-none">
                         <!-- Foto Profil -->
-                        <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . Auth::user()->foto ?? 'default.jpg') }}" alt="Profile Picture">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('img/' . (Auth::user()->foto ?? 'profile.png')) }}" alt="Profile Picture">
                     
                         <!-- Nama Pengguna -->
                         <h1 class="ml-2 bg-gray-800 text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
@@ -76,7 +78,7 @@
         @auth
         <!-- Profil dan Logout -->
         <div class="flex items-center space-x-3 px-3">
-            <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . Auth::user()->foto ?? 'default.jpg') }}" alt="Foto Profil">
+            <img class="w-8 h-8 rounded-full" src="{{ asset('img/' . (Auth::user()->foto ?? 'profile.png')) }}" alt="Foto Profil">
             <div class="text-white font-medium">{{ Auth::user()->nama }}</div>
         </div>
         <div class="mt-3 space-y-1">
