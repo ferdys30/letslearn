@@ -17,6 +17,10 @@ return new class extends Migration
                 table: 'kelompoks',
                 indexName: 'id'
             );
+            $table->foreignId('id_penugasan')->constrained(
+                table: 'penugasans',
+                indexName: 'id'
+            );
             $table->foreignId('id_pjbl')->constrained(
                 table: 'pjbls',
                 indexName: 'id'

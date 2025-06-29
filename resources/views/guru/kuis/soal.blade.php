@@ -43,7 +43,7 @@
             <div class="bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto p-6 relative">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Soal</h3>
 
-                <form action="{{ url('/guru/kuis/' . $kuis->id . '/soal') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('guru.kuis.soal.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Urutan Soal -->

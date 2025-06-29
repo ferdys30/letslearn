@@ -36,8 +36,12 @@ class kelompok extends Model
         return $this->hasMany(studi_kasus::class,'id_kelompok');
     }
 
-        public function Posisi(): HasMany
+     public function posisi(): BelongsTo
     {
-        return $this->hasMany(Posisi::class,'id_kelompok');
+        return $this->belongsTo(Posisi::class, 'id_posisi');
+    }
+
+    public function penugasan() {
+        return $this->belongsTo(Penugasan::class, 'id_penugasan');
     }
 }

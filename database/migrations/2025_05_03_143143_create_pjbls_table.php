@@ -18,13 +18,21 @@ return new class extends Migration
                 table: 'mata_pelajarans',
                 indexName: 'id'
             );
+            $table->foreignId('id_penugasan')
+                ->nullable()
+                ->constrained('penugasans')
+                ->onDelete('cascade');
+            $table->foreignId('id_pertemuan')
+                ->nullable()
+                ->constrained('pertemuans')
+                ->onDelete('set null');
             // $table->unsignedBigInteger('id_user');
             // $table->foreign('id_user')->references('id')->on('users');
             $table->string('nama_syntax');
             $table->string('slug');
             $table->string('penjelasan');
             $table->integer('pengumpulan')->nullable();//type pengumpulan
-            $table->integer('waktu');//type pengumpulan
+            $table->integer('waktu')->nullable();;//type pengumpulan
             $table->dateTime('waktu_mulai');
             $table->timestamps();
         });

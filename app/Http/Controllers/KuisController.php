@@ -2,51 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\kuis;
 use App\Models\soal;
+use App\Models\Penilaian;
+use Illuminate\Http\Request;
+use App\Models\mata_pelajaran;
+use Illuminate\Support\Facades\Auth;
 
 class KuisController extends Controller
 {
     //slugg
-   public function index()
+    public function index(mata_pelajaran $mapel)
     {
-        $kuisList = Kuis::all(); // Bisa difilter per mapel nanti
-        return view('siswa.kuis.index', compact('kuisList'));
+        // Ambil semua kuis yang berelasi dengan mapel tertentu
+        $kuisList = Kuis::where('id_mapel', $mapel->id)->get();
+
+        return view('siswa/kuis/index', compact('kuisList', 'mapel'));
     }
 
-    public function show(Kuis $kuis)
+    public function show(mata_pelajaran $mapel, Kuis $kuis)
     {
         $soals = Soal::where('id_kuis', $kuis->id)->orderBy('urutan')->get();
         return view('siswa.kuis.show', compact('kuis', 'soals'));
     }
 
-    public function submit(Request $req, Kuis $kuis)
+
+    public function submit(Request $request, $kuisId)
     {
-        $jawaban = $req->except(['_token']);
-        // Tambahkan logika simpan ke DB / penilaian di sini
-        return redirect()->route('siswa.kuis.index')->with('success', 'Jawaban berhasil dikirim!');
+        $userId = Auth::id();
+        $jawabanUser = $request->input('jawaban', []);
+        $soals = Soal::where('id_kuis', $kuisId)->get();
+        $totalNilai = 0;
+
+        foreach ($soals as $soal) {
+            $jawabanBenar = strtolower(trim($soal->jawaban_benar));
+            $jawabanSiswa = strtolower(trim($jawabanUser[$soal->id] ?? ''));
+
+            if ($jawabanSiswa === $jawabanBenar) {
+                $totalNilai += intval($soal->point);
+            }
+        }
+
+        // Cegah duplikat nilai
+        $existing = Penilaian::where('id_user', $userId)->where('id_kuis', $kuisId)->first();
+        if ($existing) {
+            return redirect()->back()->with('error', 'Kamu sudah menyelesaikan kuis ini.');
+        }
+
+        Penilaian::create([
+            'id_user' => $userId,
+            'id_kuis' => $kuisId,
+            'id_indikator' => null, // Bisa diisi nanti
+            'nilai' => $totalNilai,
+        ]);
+
+        return redirect()
+            ->route('kelas.kuis', ['mapel' => $request->mapel_slug ?? ''])
+            ->with('success', 'Jawaban berhasil dikumpulkan. Nilai: ' . $totalNilai);
     }
 
 
+
     
-    public function kuis()
+    public function kuis(mata_pelajaran $mapel)
     {
         $daftar_kuis = Kuis::all();
         return view('guru.kuis.index', [
             'tittle' => 'Kuis',
-            'daftar_kuis' => $daftar_kuis
+            'daftar_kuis' => $daftar_kuis,
+            'mapel' => $mapel
         ]);
     }
 
-    public function soal(Kuis $kuis)
+    public function soal(mata_pelajaran $mapel, Kuis $kuis)
     {
-        $kuis->load('soals'); // eager load soals
+        // Validasi bahwa kuis ini milik mapel yang benar
+        if ($kuis->id_mapel !== $mapel->id) {
+            abort(404);
+        }
+
         return view('guru.kuis.soal', [
             'tittle' => 'Tambahkan Soal',
-            'kuis' => $kuis
+            'kuis' => $kuis,
+            'mapel' => $mapel
         ]);
     }
+
+
+
 
     public function store(Request $request)
     {
@@ -55,7 +98,7 @@ class KuisController extends Controller
             'judul_kuis' => 'required|string',
             'deskripsi_materi' => 'required|string',
             'durasi' => 'required|integer',
-            'id_mapel' => 'required|exists:mata_pelajarans,id'
+            'id_mapel' => 'required'
         ]);
 
         $kuis = new Kuis();

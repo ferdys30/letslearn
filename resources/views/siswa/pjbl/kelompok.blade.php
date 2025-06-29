@@ -25,7 +25,7 @@
     <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-800">Kelompok Pelajaran {{ $mapel->nama_mapel }}</h2>
-            @if (!auth()->user()->anggota_kelompok()->exists())
+            @if (!$userKelompok)
                 <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Kelompok</button>
             @endif
         </div>
@@ -42,69 +42,76 @@
             </thead>
             
             <tbody class="bg-white">
-                @php
-                    // Cari id_kelompok milik user yang sedang login
-                    $userKelompok = $anggota->firstWhere('id_user', auth()->id())?->id_kelompok;
-                @endphp
-                @foreach ($kelompok as $klmpk)
+                 @foreach ($kelompok as $klmpk)
                     @php
-                        $anggotaCount = $anggota->where('id_kelompok', $klmpk->id)->count();
-                        $total = $klmpk->jumlah_kelompok;
-                        $percentage = $total > 0 ? round(($anggotaCount / $total) * 100) : 0;
-                        $progressColor = $percentage >= 100 ? 'bg-green-600' : 'bg-blue-600';
+                        $count = $anggota->where('id_kelompok', $klmpk->id)->count();
+                        $progress = round($count / $klmpk->jumlah_kelompok * 100);
+                        $progressColor = $progress >= 100 ? 'bg-green-600' : 'bg-blue-600';
                     @endphp
-                    {{-- <div class="text-sm text-gray-500">ID Kelompok User Login: {{ $userKelompok ?? 'Belum masuk kelompok' }}</div> --}}
-
-                    <tr class="border-t hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $klmpk->nama_kelompok }}</td>
-                        <td class="px-4 py-2">{{ $klmpk->jumlah_kelompok }}</td>
+                    <tr>
+                        <td>{{ $klmpk->nama_kelompok }}</td>
+                        <td>{{ $klmpk->jumlah_kelompok }}</td>
                         <td>
-                            <ol>
-                                @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
-                                    <li>{{ $loop->iteration }}. {{ $item->user->nama }}</li>
-                                @endforeach
-                            </ol>
-                        </td>   
-                        <td class="px-4 py-2">
-                            <div class="relative pt-1">
-                                <div class="flex mb-2 items-center justify-between">
-                                    <span class="text-xs font-semibold inline-block py-1 uppercase">Jumlah</span>
-                                    <span class="text-xs font-semibold inline-block py-1 uppercase">
-                                        {{ $anggotaCount }}/{{ $total }}
-                                    </span>
-                                </div>
-                                <div class="flex mb-2">
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="{{ $progressColor }} h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                            <ol>@foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
+                                <li>{{ $item->user->nama }}</li>
+                            @endforeach</ol>
+                        </td>
+                        <td>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="{{ $progressColor }} h-2.5 rounded-full" style="width: {{ $progress }}%"></div>
+                            </div>
+                            <small>{{ $count }}/{{ $klmpk->jumlah_kelompok }} ({{ $progress }}%)</small>
+                        </td>
+                        <td class="text-center">
+                            @if ($userKelompok === $klmpk->id && $count == $klmpk->jumlah_kelompok && $klmpk->studi_kasus->isNotEmpty())
+                                <a href="{{ route('siswa.kelas.penugasan.show', [
+                                    'mapel' => $mapel->slug,
+                                    'penugasan' => $klmpk->penugasan->slug // ❗ lebih baik pakai slug
+                                ]) }}" 
+                                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                                    Lihat Tugas
+                                </a>
+                            @elseif (!$userKelompok && $count < $klmpk->jumlah_kelompok)
+                                <button onclick="bukaModalGabung({{ $klmpk->id }})" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                                    Gabung Kelompok
+                                </button>
+                                <!-- Modal Gabung Kelompok -->
+                                <div id="modalGabung" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+                                        <h2 class="text-lg font-bold mb-4">Pilih Posisi</h2>
+                                        <form id="formGabung" method="POST" action="{{ route('siswa.kelas.pjbl.kelompok.gabung') }}">
+                                            @csrf
+                                            <input type="hidden" name="id_kelompok" id="id_kelompok_input">
+
+                                            <div class="mb-4">
+                                                <label for="id_posisi" class="block mb-1 font-medium">Posisi dalam Kelompok</label>
+                                                <select name="id_posisi" id="id_posisi" class="w-full border rounded px-3 py-2" required>
+                                                    <option value="">-- Pilih Posisi --</option>
+                                                    @foreach ($posisi as $posisi)
+                                                        @if ($posisi->id !== 1 && strtolower($posisi->nama_posisi) !== 'ketua')
+                                                            <option value="{{ $posisi->id }}">{{ $posisi->nama_posisi }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="flex justify-end gap-2">
+                                                <button type="button" onclick="tutupModalGabung()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Gabung</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="px-4 py-2 text-center">
-                            @if ($userKelompok === $klmpk->id && $anggotaCount == $klmpk->jumlah_kelompok &&  $klmpk->studi_kasus->isNotEmpty())
-                                <a href="/siswa/pjbl" class="bg-green-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-green-700 transition">
-                                    Lihat
-                                </a>
-                            @elseif (is_null($userKelompok) && $anggotaCount < $klmpk->jumlah_kelompok)
-                                <form action="/gabung/kelompok" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_kelompok" value="{{ $klmpk->id }}">
-                                    <button type="submit" class="bg-blue-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-blue-700 transition">
-                                        Gabung Kelompok
-                                    </button>
-                                </form>
-                            @elseif (is_null($userKelompok))
-                                <span class="text-gray-500 italic">Penuh</span>
-                            @elseif ($userKelompok === $klmpk->id && $anggotaCount == $klmpk->jumlah_kelompok && $klmpk->studi_kasus->isEmpty())
-                                <span class="text-gray-500 italic">Menunggu Studi Kasus</span>
+
+                            @elseif (!$userKelompok)
+                                <span class="italic text-gray-500">Penuh</span>
                             @else
-                                <span class="text-gray-500 italic">Tunggu Penuh</span>
+                                <span class="italic text-gray-500">Ditunggu...</span>
                             @endif
                         </td>
                     </tr>
                 @endforeach
             </tbody>
-
         </table>
         
     </div>
@@ -112,9 +119,10 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Syntax</h3>
 
-            <form action="/store/kelompok" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="{{ route('siswa.kelas.pjbl.kelompok.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
+                <input type="hidden" name="id_penugasan" value="{{ $penugasan->id }}">
                 <!-- Nama Kelompok -->
                 <div>
                     <label for="nama_kelompok" class="block mb-2 text-sm font-medium text-gray-900">Nama Kelompok</label>
@@ -151,4 +159,15 @@
             modal.classList.toggle('hidden', !show);
         }
     </script>
+    <script>
+        function bukaModalGabung(idKelompok) {
+            document.getElementById('modalGabung').classList.remove('hidden');
+            document.getElementById('id_kelompok_input').value = idKelompok;
+        }
+
+        function tutupModalGabung() {
+            document.getElementById('modalGabung').classList.add('hidden');
+        }
+    </script>
+
 </x-layout-siswa>

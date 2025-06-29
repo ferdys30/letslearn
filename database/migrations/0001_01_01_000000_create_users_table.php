@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('nama');
             $table->string('foto')->nullable();
             $table->string('jurusan')->nullable();
-            $table->string('kelas')->nullable();
+            $table->integer('kelas')->nullable();
             $table->string('kelas_detail')->nullable();
             $table->string('alamat')->nullable();
             $table->string('email')->unique();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('username');
             $table->string('password');
+            $table->integer('id_role');
             // $table->rememberToken();
             $table->timestamps();
         });

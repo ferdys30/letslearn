@@ -30,27 +30,21 @@
     <!-- Section Kelas -->
     @auth
     <section class="container mx-auto px-6 lg:px-20 py-12 bg-white rounded-md">
-      <h2 class="text-3xl font-bold text-gray-800 text-left">Kelas Saya</h2>
-      {{-- <p class="text-gray-600 text-left mt-2">Pilih kelas yang ingin kamu pelajari!</p> --}}
+        <h2 class="text-3xl font-bold text-gray-800 text-left">Kelas Saya</h2>
+        {{-- <p class="text-gray-600 text-left mt-2">Pilih kelas yang ingin kamu pelajari!</p> --}}
 
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Card Pemrograman Web -->
-            <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-              <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $mapel->nama_mapel }}</h3>
-              <p class="text-gray-600 mt-2">{{ $mapel->deskripsi_mapel }}</p>
-              <a href="/siswa/kelas/fitur/{{ $mapel->slug }}" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
-                  Lihat Kelas
-              </a>
-            </div>
-            
-            <!-- Card Pemrograman Grafis -->
-            {{-- <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-                <h3 class="text-xl font-semibold text-gray-800 mt-4">Pemrograman Grafis</h3>
-                <p class="text-gray-600 mt-2">Pelajari bagaimana membuat desain dan animasi dengan teknik pemrograman grafis.</p>
-                <a href="#" class="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-                    Lihat Kelas
-                </a>
-            </div> --}}
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            @forelse ($mapel as $item)
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
+                    <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $item->nama_mapel }}</h3>
+                        <p class="text-gray-600 mt-2">{{ $item->deskripsi_mapel }}</p>
+                    <a href="/siswa/kelas/{{ $item->slug }}/fitur" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
+                        Lihat Kelas
+                    </a>
+                </div>
+            @empty
+                <p class="text-center text-gray-500 col-span-2">Belum ada mata pelajaran tersedia.</p>
+            @endforelse
         </div>
     </section>
     @endauth
@@ -105,10 +99,10 @@
     <section x-data="{ 
         activeIndex: 0, 
         items: [
-            { title: 'Kuis', description: 'Uji pemahaman kamu dengan kuis interaktif.', link: '/siswa/kuis', bg: 'bg-gradient-to-r from-blue-500 to-indigo-600' },
-            { title: 'Materi', description: 'Pelajari konsep dasar hingga tingkat lanjut.', link: '/siswa/materi', bg: 'bg-gradient-to-r from-green-500 to-teal-600' },
-            { title: 'Project Based Learning', description: 'Bangun proyek nyata dengan metode PBL.', link: '/siswa/pjbl/kelompok', bg: 'bg-gradient-to-r from-purple-500 to-pink-600' }
-        ] 
+            { title: 'Kuis', description: 'Uji pemahaman kamu dengan kuis interaktif.', link: '/siswa/kelas?fitur=Kuis', bg: 'bg-gradient-to-r from-blue-500 to-indigo-600'  },
+            { title: 'Materi', description: 'Pelajari konsep dasar hingga tingkat lanjut.', link: '/siswa/kelas?fitur=Materi', bg: 'bg-gradient-to-r from-green-500 to-teal-600' },
+            { title: 'Project Based Learning', description: 'Bangun proyek nyata dengan metode PBL.', link: '/siswa/kelas?fitur=pjbl', bg: 'bg-gradient-to-r from-purple-500 to-pink-600' }
+        ]
     }" 
     x-init="setInterval(() => activeIndex = (activeIndex + 1) % items.length, 3000)" 
     class="w-full h-screen flex items-center justify-center transition-all duration-500 rounded-md mt-2"

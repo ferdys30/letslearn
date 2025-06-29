@@ -19,4 +19,8 @@ class anggota_kelompok extends Model
     {
         return $this->belongsTo(User::class,'id_user');
     }
+    public function posisi()
+    {
+        return $this->belongsTo(Posisi::class, 'id_posisi');
+    }
 }

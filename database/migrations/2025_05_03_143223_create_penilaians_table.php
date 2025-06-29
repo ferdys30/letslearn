@@ -18,13 +18,18 @@ return new class extends Migration
             $table->foreignId('id_indikator')->constrained(
                 table: 'indikator_penilaians',
                 indexName: 'id'
-            );
+            )->nullable();
 
             // Relasi ke user (siswa/guru yang dinilai atau memberi nilai)
             $table->foreignId('id_user')->constrained(
                 table: 'users',
                 indexName: 'id'
             );
+
+            $table->foreignId('id_kuis')->constrained(
+                table: 'kuis',
+                indexName: 'id'
+            )->nullable();
 
             // Nilai yang diberikan (1–5 atau sesuai skema)
             $table->integer('nilai');

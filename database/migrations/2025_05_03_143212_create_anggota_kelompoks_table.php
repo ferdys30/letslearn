@@ -21,6 +21,10 @@ return new class extends Migration
                 table: 'users',
                 indexName: 'id'
             );
+            $table->foreignId('id_posisi')->constrained(
+                table: 'posisis',
+                indexName: 'id'
+            );
             // $table->unsignedBigInteger('id_user');
             // $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();

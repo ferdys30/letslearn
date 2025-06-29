@@ -23,15 +23,15 @@
                 <td>{{ $klmpk->nama_kelompok }}</td>
                 <td>
                     <ol>
-                        @foreach ($studi_kasus->where('id_studi_kasus', $klmpk->id) as $item)
-                            <li>{{ $loop->iteration }}. {{ $item->studi_kasus->studi_kasus }}</li>
+                        @foreach ($klmpk->studi_kasus as $item)
+                            <li>{{ $loop->iteration }}. {{ $item->studi_kasus }}</li>
                         @endforeach
                     </ol>
                 </td>
                 <td>
                     <ol>
-                        @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
-                            <li>{{ $loop->iteration }}. {{ $item->user->name }}</li>
+                        @foreach ($klmpk->anggota_kelompok as $item)
+                            <li>{{ $loop->iteration }}. {{ $item->user->nama }}</li>
                         @endforeach
                     </ol>
                 </td>
@@ -51,17 +51,18 @@
                     </div>
                 </td>
                 <td>
-                    <a href="#" class="mt-2 px-4 py-2 bg-blue-600 text-center text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                    <a href="#" class="mt-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
                         Lihat
                     </a>
                 </td>
                 <td>
-                    <a href="javascript:void(0)" onclick="openModal()" class="mt-2 px-4 py-2 bg-green-600 text-center text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-300">
+                    <a href="javascript:void(0)" onclick="openModal()" class="mt-2 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-300">
                         Nilai
                     </a>
                 </td>
             </tr>
-        @endforeach
+            @endforeach
+
 
 
           </tbody>

@@ -2,32 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\mata_pelajaran;
 use Illuminate\Http\Request;
 use App\Models\materi;
 
 class MateriController extends Controller
 {
-    public function siswa(){
-        $materi = materi::all();
-        
-        return view('siswa/materi/index', [
-            'tittle' => 'Materi',
-            'materi' => $materi
+    public function siswa(mata_pelajaran $mapel)
+    {
+        // Ambil materi yang hanya milik mapel ini
+        $materi = $mapel->materi;
+
+        return view('siswa.materi.index', [
+            'tittle' => 'Materi - ' . $mapel->nama_mapel,
+            'materi' => $materi,
+            'mapel' => $mapel
         ]);
     }
 
-    public function guru(){
-        $materi = materi::all();
+    public function guru(mata_pelajaran $mapel){
+        $materi = $mapel->materi;
 
         return view('guru/materi/index', [
             'tittle' => 'Materi',
-            'materi' => $materi
+            'materi' => $materi,
+            'mapel'=> $mapel
         ]);
     }
     public function store(Request $request)
     {
         $request->validate([
-            'id_mapel' => 'required|exists:mata_pelajarans,id',
+            'id_mapel' => 'required',
             'urutan_materi' => 'required|numeric',
             'judul_materi' => 'required|string|max:255',
             'deskripsi_materi' => 'required|string',
@@ -47,7 +52,7 @@ class MateriController extends Controller
             'dokumen_materi' => $filePath,
         ]);
 
-        return redirect('/guru/materi')->with('success', 'Materi berhasil ditambahkan.');
+        return redirect()->back();
     }
 
     public function byMapel($id_mapel)

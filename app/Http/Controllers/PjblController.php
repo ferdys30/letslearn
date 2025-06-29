@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Pjbl;
 use App\Models\kelompok;
 use App\Models\pengumpulan;
 use App\Models\studi_kasus;
 use Illuminate\Http\Request;
 use App\Models\mata_pelajaran;
+use App\Models\penugasan;
+use App\Models\tugas;
 use App\Models\anggota_kelompok;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -15,12 +18,22 @@ use Illuminate\Support\Facades\Auth;
 
 class PjblController extends Controller
 {
-      
-    public function index()
+    public function index(mata_pelajaran $mapel)
+    {
+        $penugasans = Penugasan::where('id_mapel', $mapel->id)->get();
+        // dd($penugasans);
+
+        return view('siswa.pjbl.index', [
+            'tittle' => 'Daftar Penugasan',
+            'mapel' => $mapel,
+            'penugasans' => $penugasans,
+        ]);
+    }
+
+    public function pjbl(mata_pelajaran $mapel, Penugasan $penugasan)
     {
         $userId = Auth::id();
 
-        // Cek kelompok user
         $userKelompok = anggota_kelompok::where('id_user', $userId)->first();
         if (!$userKelompok) {
             return redirect()->back()->with('error', 'Kamu belum tergabung dalam kelompok manapun.');
@@ -28,68 +41,101 @@ class PjblController extends Controller
 
         $idKelompok = $userKelompok->id_kelompok;
 
-        // Ambil semua syntax PJBL
-        $pjbls = pjbl::orderBy('urutan')->get();
+        $pjbls = pjbl::where('id_mapel', $mapel->id)
+            ->where('id_penugasan', $penugasan->id)
+            ->orderBy('urutan')
+            ->get();
 
-        // Ambil semua pengumpulan valid milik kelompok
         $validPengumpulan = pengumpulan::where('id_kelompok', $idKelompok)
             ->where('status', 2)
-            ->pluck('id_pjbl'); // Ambil ID PJBL yang sudah valid
+            ->pluck('id_pjbl');
 
-        // Ambil urutan tertinggi yang sudah divalidasi
         $urutanValidTerakhir = pjbl::whereIn('id', $validPengumpulan)->max('urutan') ?? 0;
 
-        // Tandai setiap PJBL apakah terkunci
-        $pjbls->map(function ($item) use ($urutanValidTerakhir) 
-        {
-            $waktuMulai = \Carbon\Carbon::make($item->waktu_mulai) ?? now()->addYear(); // fallback jauh ke depan jika error
-
-            if ($item->urutan == 1) {
-                $item->terkunci = false;
-            } else {
-                $item->terkunci = $item->urutan > ($urutanValidTerakhir + 1) || now() < $waktuMulai;
-            }
-
+        $pjbls->map(function ($item) use ($urutanValidTerakhir) {
+            $waktuMulai = Carbon::make($item->waktu_mulai) ?? now()->addYear();
+            $item->terkunci = !($item->urutan == 1 || ($item->urutan <= $urutanValidTerakhir + 1 && now() >= $waktuMulai));
             return $item;
         });
 
-
         $pengumpulans = pengumpulan::where('id_kelompok', $idKelompok)->get()->keyBy('id_pjbl');
 
-        // Ambil anggota kelompok ini (termasuk relasi user)
-        $anggota_kelompok = anggota_kelompok::with('user')
+        $anggota_kelompok = anggota_kelompok::with('user', 'posisi') // tambah relasi 'posisi'
             ->where('id_kelompok', $idKelompok)
             ->get();
 
-        return view('siswa/pjbl/index', [
+        return view('siswa/pjbl/pjbl', [
             'tittle' => 'Project Based Learning',
             'pjbls' => $pjbls,
-            'anggota_kelompok' => $anggota_kelompok, // <-- ini ditambahkan
-            'pengumpulans' => $pengumpulans, // <--- Tambahan
+            'anggota_kelompok' => $anggota_kelompok,
+            'pengumpulans' => $pengumpulans,
+            'mapel' => $mapel,
+            'penugasan' => $penugasan,
         ]);
     }
 
+
+
     //syntax siswa
-    public function syntax(pjbl $pjbl)
+    public function syntax(Mata_pelajaran $mapel, Penugasan $penugasan, Pjbl $pjbl)
     {
         $userId = Auth::id();
 
-        // Cek apakah user sudah tergabung dalam kelompok
-        $userKelompok = anggota_kelompok::where('id_user', $userId)->first();
+        $userKelompok = anggota_kelompok::with('posisi')
+            ->where('id_user', $userId)
+            ->first();
+
         if (!$userKelompok) {
             return redirect()->back()->with('error', 'Kamu belum tergabung dalam kelompok manapun.');
         }
+
         $idKelompok = $userKelompok->id_kelompok;
-        // Ambil studi kasus milik kelompok
+        $namaPosisi = $userKelompok->posisi->nama_posisi ?? 'anggota';
+
         $studi_kasus = studi_kasus::where('id_kelompok', $idKelompok)->get();
 
+        $canCreateTugas = strtolower($namaPosisi) === 'ketua';
+
+        $anggotaKelompok = anggota_kelompok::with(['user', 'posisi'])
+            ->where('id_kelompok', $idKelompok)
+            ->get();
+
+        // Ambil semua tugas yang terkait dengan pjbl dan anggota kelompok ini
+        $idAnggotaKelompok = $anggotaKelompok->pluck('id')->toArray();
+
+        if (strtolower($namaPosisi) === 'ketua') {
+            // Ketua melihat semua tugas kelompok
+            $idAnggotaKelompok = $anggotaKelompok->pluck('id')->toArray();
+
+            $tugas = tugas::where('id_pjbl', $pjbl->id)
+                ->whereIn('id_anggota_kelompok', $idAnggotaKelompok)
+                ->get();
+        } else {
+            // Anggota biasa hanya melihat tugas miliknya
+            $tugas = tugas::where('id_pjbl', $pjbl->id)
+                ->where('id_anggota_kelompok', $userKelompok->id)
+                ->get();
+        }
+
+        if (!$penugasan || !$penugasan->id) {
+            return redirect()->back()->with('error', 'Penugasan tidak ditemukan.');
+        }
+
+        // dd($tugas);
         return view('siswa/pjbl/syntax', [
             'tittle' => 'Project Based Learning',
+            'mapel' => $mapel,
             'pjbl' => $pjbl,
-            'studi_kasus' => $studi_kasus,// studi kasus
-            'kelompokUser' => $userKelompok, // <-- Tambahkan ini
+            'studi_kasus' => $studi_kasus,
+            'penugasan' => $penugasan,
+            'kelompokUser' => $userKelompok,
+            'canCreateTugas' => $canCreateTugas,
+            'anggotaKelompok' => $anggotaKelompok,
+            'tugas' => $tugas, // kirim data tugas ke view
         ]);
     }
+
+
 
     //pembacaan pjbl
     public function guru_syntax($namaKelompok)
@@ -196,12 +242,17 @@ class PjblController extends Controller
     {
         Log::info('Form submit diterima', $request->all());
 
+        $pjbl = Pjbl::findOrFail($request->id_pjbl);
+        $mapel = $pjbl->mata_pelajaran; // Pastikan kamu sudah punya relasi 'mapel()' di model Pjbl
+
+
         $validatedData = $request->validate([
             'id_kelompok' => 'required',
+            'file_pengumpulan' => 'nullable|file',
             'id_pjbl' => 'required',
             'id_user' => 'required',
+            'id_penugasan' => 'required',
             'deskriptif' => 'nullable|string',
-            'file_pengumpulan' => 'nullable|file',
         ]);
 
         $validatedData['status'] = 1;
@@ -218,12 +269,12 @@ class PjblController extends Controller
             ->exists();
 
         if ($alreadySubmitted) {
-            return redirect()->back()->with('error', 'Kelompokmu sudah mengumpulkan tahap ini.');
+           return back()->with('error', 'Kelompokmu sudah mengumpulkan tahap ini.');
         }
 
         pengumpulan::create($validatedData);
         
-        return redirect("/siswa/pjbl")->with('success', 'Jawaban berhasil dikumpulkan!');
+        return back()->with('success', 'Jawaban berhasil dikumpulkan!');
     }
 
 

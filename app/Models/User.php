@@ -62,9 +62,9 @@ class User extends Authenticatable
         return $this->hasMany(mata_pelajaran::class, 'id_user');
     }
 
-    public function anggota_kelompok(): HasOne
+    public function anggota_kelompok(): HasMany
     {
-        return $this->hasOne(anggota_kelompok::class, 'id_user');
+        return $this->hasMany(anggota_kelompok::class, 'id_user');
     }
 
     public function diskusi(): HasMany

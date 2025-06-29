@@ -7,12 +7,12 @@
        class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
        
     <!-- Timer -->
-    <div class="text-right text-xl font-semibold mb-4">
-      <span id="countdown-timer"></span>
+    <div class="text-center text-xl font-semibold mb-4">
+      Waktu Tersisa <span id="countdown-timer" style="border: 2px solid #4F46E5; padding: 4px 8px; border-radius: 6px;"></span>
     </div>
 
     <!-- Soal Sekaligus -->
-    <form id="form-pengumpulan" action="{{ route('siswa.kuis.submit', $kuis) }}" method="POST" @submit.prevent="submitAnswers()">
+    <form id="form-pengumpulan" action="{{ route('siswa.kelas.kuis.submit', $kuis) }}" method="POST" @submit.prevent="submitAnswers()">
       @csrf
       @foreach($soals as $index => $soal)
       <div class="mb-6 border-b pb-4">
@@ -58,7 +58,7 @@
           this.timerInterval = setInterval(() => {
             const m = Math.floor(this.timer/60);
             const s = this.timer % 60;
-            el.textContent = `${m}:${String(s).padStart(2,'0')} tersisa`;
+            el.textContent = `${m}:${String(s).padStart(2,'0')} `;
 
             if (this.timer <= 0) {
               clearInterval(this.timerInterval);

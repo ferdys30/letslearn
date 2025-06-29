@@ -11,22 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelompoks', function (Blueprint $table) {
+        Schema::create('penugasans', function (Blueprint $table) {
             $table->id();
+
+            // Relasi ke mata pelajaran
             $table->foreignId('id_mapel')->constrained(
                 table: 'mata_pelajarans',
                 indexName: 'id'
             );
-            $table->foreignId('id_penugasan')->constrained(
-                table: 'penugasans',
-                indexName: 'id'
-            );
-            // $table->unsignedBigInteger('id_user');
-            // $table->foreign('id_user')->references('id')->on('users');
-            $table->string('nama_kelompok');
-            $table->integer('jumlah_kelompok');
+
+            $table->string('nama_penugasan'); // Misalnya "PjBL 1 - Semester Ganjil"
+            $table->string('slug'); // Misalnya "PjBL 1 - Semester Ganjil"
+            $table->string('deskripsi')->nullable();
+
+            // Tambahan opsional
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+
             $table->timestamps();
         });
+
     }
 
     /**
@@ -34,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kelompoks');
+        Schema::dropIfExists('penugasans');
     }
 };

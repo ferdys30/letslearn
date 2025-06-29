@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('jawaban_c');
             $table->string('jawaban_d');
             $table->string('jawaban_benar');
-            $table->string('point');
+            $table->integer('point');
             $table->timestamps();
         });
     }

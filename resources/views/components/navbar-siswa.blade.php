@@ -10,10 +10,10 @@
         <div class="hidden md:flex items-center ml-auto space-x-4">
             <x-nav-link-siswa href="/" :active="request()->is('/')">Home</x-nav-link-siswa>
             @auth
-                <x-nav-link-siswa href="/siswa/materi" :active="request()->is('siswa/materi')">Materi</x-nav-link-siswa>
+                <x-nav-link-siswa href="/siswa/kelas?fitur=materi" :active="request()->is('/siswa/kelas?fitur=materi')">Materi</x-nav-link-siswa>
                 {{-- <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa> --}}
-                <x-nav-link-siswa href="/siswa/pjbl/kelompok" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa>
-                <x-nav-link-siswa href="/siswa/kuis" :active="request()->is('siswa/kuis')">Kuis</x-nav-link-siswa>
+                <x-nav-link-siswa href="/siswa/kelas?fitur=pjbl" :active="request()->is('/siswa/kelas?fitur=pjbl')">Project Based Learning</x-nav-link-siswa>
+                <x-nav-link-siswa href="/siswa/kelas?fitur=kuis" :active="request()->is('/siswa/kelas?fitur=kuis')">Kuis</x-nav-link-siswa>
             @endauth
 
             @auth

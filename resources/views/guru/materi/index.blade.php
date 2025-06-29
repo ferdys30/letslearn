@@ -5,13 +5,13 @@
     <!-- Section: Selamat Datang -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Tambahkan Materi</h1>
-        <p class="text-gray-600 mt-1">Pemrograman Website</p>
+        <p class="text-gray-600 mt-1">{{ $mapel->nama_mapel }}</p>
     </section>
 
     <!-- Section Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Materi Pemrograman Website</h2>
+            <h2 class="text-xl font-semibold text-gray-800">Materi {{ $mapel->nama_mapel }}</h2>
             <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Materi</button>
         </div>
 
@@ -42,7 +42,7 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Materi</h3>
 
-            <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="{{ route('guru.materi.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <input type="hidden" name="id_mapel" value="{{ request()->get('id_mapel', 1) }}"> {{-- Sementara id_mapel=1 --}}

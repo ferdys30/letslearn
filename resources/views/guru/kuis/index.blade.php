@@ -33,7 +33,8 @@
                         <td>{{ $kuis->deskripsi_kuis }}</td>
                         <td>{{ $kuis->waktu_pengerjaan }}</td>
                         <td>
-                            <a href="{{ route('kuis.soal', ['kuis' => $kuis->id]) }}" style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                            <a href="{{ route('guru.kuis.soal', ['kuis' => $kuis,'mapel'=>$mapel]) }}"
+                            style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
                                 Soal
                             </a>
                         </td>
@@ -49,7 +50,7 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Kuis</h3>
 
-            <form action="{{ url('/guru/kuis') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('guru.kuis.soal.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_mapel" value="1">
 

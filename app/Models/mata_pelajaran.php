@@ -44,8 +44,13 @@ class mata_pelajaran extends Model
         return $this->hasMany(kelompok::class,'id_mapel');
     }
 
-    public function pjbl(): HasMany
+    public function pjbls(): HasMany
     {
         return $this->hasMany(pjbl::class,'id_mapel');
+    }
+
+    public function penugasans()
+    {
+        return $this->hasMany(Penugasan::class, 'id_mapel'); // asumsi 'id_mapel' adalah foreign key-nya
     }
 }
