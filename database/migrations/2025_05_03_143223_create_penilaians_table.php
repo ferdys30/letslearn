@@ -14,26 +14,23 @@ return new class extends Migration
         Schema::create('penilaians', function (Blueprint $table) {
             $table->id();
     
-            // Relasi ke indikator penilaian
-            $table->foreignId('id_indikator')->constrained(
-                table: 'indikator_penilaians',
-                indexName: 'id'
-            )->nullable();
-
+            $table->foreignId('id_indikator')
+                ->nullable()
+                ->constrained('indikator_penilaians');
             // Relasi ke user (siswa/guru yang dinilai atau memberi nilai)
             $table->foreignId('id_user')->constrained(
                 table: 'users',
                 indexName: 'id'
             );
 
-            $table->foreignId('id_kuis')->constrained(
-                table: 'kuis',
-                indexName: 'id'
-            )->nullable();
+            $table->foreignId('id_kuis')
+                ->nullable()
+                ->constrained('kuis');
+
 
             // Nilai yang diberikan (1–5 atau sesuai skema)
             $table->integer('nilai');
-
+            $table->string('file_jawaban')->nullable(); // untuk simpan path file PDF
             // Optional: komentar atau catatan tambahan
             // $table->text('catatan')->nullable();
             $table->timestamps();

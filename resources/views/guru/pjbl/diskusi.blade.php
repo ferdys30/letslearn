@@ -51,7 +51,7 @@
                     <div class="w-10 h-10 flex items-center justify-center border-2 border-purple-500 text-purple-400 rounded-full font-bold">
                         ✔
                     </div>
-                    <p class="text-sm font-bold mt-2 text-center">Membuat kelompok</p>
+                    <p class="text-sm font-bold mt-2 text-center">Membuat kelompok_pjbl</p>
                     <p class="text-xs text-gray-500 text-center">membuat rumusan masalah dan mencari indikator penyebab masalah</p>
                 </div>
     
@@ -87,7 +87,7 @@
                     <div class="w-10 h-10 flex items-center justify-center border-2 border-purple-500 text-purple-400 rounded-full font-bold">
                         ✔
                     </div>
-                    <p class="text-sm font-bold mt-2 text-center">Pengumpulan Proyek</p>
+                    <p class="text-sm font-bold mt-2 text-center">pengumpulan_tugas Proyek</p>
                     <p class="text-xs text-gray-500 text-center">Mengumpulkan hasil proyek</p>
                 </div>
     
@@ -96,7 +96,7 @@
                     <div class="w-10 h-10 flex items-center justify-center border-2 border-purple-500 text-purple-400 rounded-full font-bold">
                         ✔
                     </div>
-                    <p class="text-sm font-bold mt-2 text-center">Kelompok Presentasi</p>
+                    <p class="text-sm font-bold mt-2 text-center">kelompok_pjbl Presentasi</p>
                     <p class="text-xs text-gray-500 text-center">Memaparkan hasil proyek</p>
                 </div>
     
@@ -115,7 +115,7 @@
                         8
                     </div>
                     <p class="text-sm font-bold text-purple-500 mt-2 text-center">Refleksi</p>
-                    <p class="text-xs text-gray-500 text-center">Pemberian pemahaman mengenai PJBL</p>
+                    <p class="text-xs text-gray-500 text-center">Pemberian pemahaman mengenai aktivitas_pjbl</p>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
             
                 <!-- Tombol Next -->
                 <div class="mt-4">
-                    <a href="/siswa/pjbl/8" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
+                    <a href="/siswa/aktivitas_pjbl/8" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md transition">
                         Submit
                     </a>
                 </div>

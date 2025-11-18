@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class diskusi extends Model
 {
-    protected $fillable = ['id_pjbl','id_kelompok','id_user','parent_id','pesan_diskusi'];
+    protected $fillable = ['id_aktivitas_pjbl','id_kelompok_pjbl','id_user','parent_id','pesan_diskusi'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class,'id_user');
     }
-    public function kelompok(): BelongsTo
+    public function kelompok_pjbl(): BelongsTo
     {
-        return $this->belongsTo(kelompok::class,'id_kelompok');
+        return $this->belongsTo(kelompok_pjbl::class,'id_kelompok_pjbl');
     }
-    public function pjbl(): BelongsTo
+    public function aktivitas_pjbl(): BelongsTo
     {
-        return $this->belongsTo(pjbl::class,'id_pjbl');
+        return $this->belongsTo(aktivitas_pjbl::class,'id_aktivitas_pjbl');
     }
 }

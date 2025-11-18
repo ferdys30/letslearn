@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pertemuan extends Model
 {
-    public function pjbls()
+    protected $table ='pertemuans';
+    protected $fillable = ['id_mapel','judul_pertemuan','tanggal'];
+    public function aktivitas_pjbls()
     {
-        return $this->hasMany(Pjbl::class, 'id_pertemuan');
+        return $this->hasMany(aktivitas_pjbl::class, 'id_pertemuan');
     }
 
 }

@@ -18,11 +18,13 @@ return new class extends Migration
                 indexName: 'id'
             );
             $table->string('urutan');
+            $table->string('gambar')->nullable();
             $table->string('pertanyaan');
             $table->string('jawaban_a');
             $table->string('jawaban_b');
             $table->string('jawaban_c');
             $table->string('jawaban_d');
+            $table->string('jawaban_e');
             $table->string('jawaban_benar');
             $table->integer('point');
             $table->timestamps();

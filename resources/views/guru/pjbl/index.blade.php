@@ -2,90 +2,137 @@
     <!-- CSS DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
 
-    <!-- Section: Selamat Datang -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Tambahkan Studi Kasus</h1>
-        <p class="text-gray-600 mt-1">Project Based Learning</p>
-    </section>
+    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6 w-full border-b-4 border-purple-600">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4"> {{ __('guru.Project_Based_Learning') }}
+            {{ $mapel->nama_mapel }}</h2>
+        <h3 class="text-2xl text-purple-700 font-semibold">{{ $siklus->nama_siklus_pjbl }}</h3>
+        <p class="text-gray-600 mb-8">{{ $siklus->deskripsi }}</p>
 
-    <!-- Section Tabel -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Studi Kasus Kelompok</h2>
-            <button onclick="toggleModal(true)" class="bg-purple-600 text-white pr-4 pl-2 py-2 rounded-md hover:bg-purple-700 transition">+ Tambah Studi Kasus</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <a href="{{ route('guru.indikator', ['mapel' => $mapel->slug, 'siklus_pjbl' => $siklus->slug]) }}"
+                class="bg-purple-700 text-white text-base px-4 py-3 rounded-lg shadow hover:bg-purple-800 transition flex items-center justify-center">
+                📌 {{ __('guru.Indikator') }}
+            </a>
+
+            <a href="{{ route('guru.aktivitas_pjbl', ['mapel' => $mapel->slug, 'siklus_pjbl' => $siklus->slug]) }}"
+                class="bg-purple-600 text-white text-base px-4 py-3 rounded-lg shadow hover:bg-purple-700 transition flex items-center justify-center">
+                🏃 {{ __('guru.Aktivitas') }}
+            </a>
+
+            <a href="{{ route('guru.studi_kasus', ['mapel' => $mapel->slug, 'siklus_pjbl' => $siklus->slug]) }}"
+                class="bg-white text-purple-700 border border-purple-700 text-base px-4 py-3 rounded-lg shadow hover:bg-purple-700 hover:text-white transition flex items-center justify-center">
+                🧩 {{ __('guru.Studi_Kasus') }}
+            </a>
+
+            <a href="{{ route('guru.posisi', ['mapel' => $mapel->slug, 'siklus_pjbl' => $siklus->slug]) }}"
+                class="bg-black text-white text-base px-4 py-3 rounded-lg shadow hover:bg-gray-800 transition flex items-center justify-center">
+                🧩 {{ __('guru.Posisi') }}
+            </a>
         </div>
-
-        <table id="myTable" class="display">
-            <thead>
-                <tr>
-                    <th>Kelompok</th>
-                    <th>Studi Kasus</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($studi_kasus as $sk)
-                    
-                <tr>
-                    <td>{{ $sk->kelompok->nama_kelompok }}</td>
-                    <td>{{ $sk->studi_kasus }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
     </section>
 
-    <!-- Modal -->
-    <div id="modalForm" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Studi Kasus</h3>
+    {{-- Tabel Kelompok dengan Studi Kasus --}}
+    <section class="px-6 py-6 bg-white shadow-md rounded-md w-full">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ __('guru.Data_Kelompok') }}</h2>
 
-            <form action="/tambah/studi_kasus" method="POST" class="space-y-4">
-                @csrf
-                <!-- Input No Kelompok -->
-                <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
-                <div>
-                    <label for="id_kelompok" class="block mb-2 text-sm font-medium text-gray-700 ">No. Kelompok</label>
-                    <select name="id_kelompok" id="id_kelompok" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5" required>
-                        <option value="">Pilih Kelompok</option>
-                        @foreach ($kelompok as $item)
-                            <option value="{{ $item->id }}"> {{ $item->nama_kelompok }}</option>
+        @if ($kelompoks->isEmpty())
+            <p class="text-gray-500">{{ __('guru.BAKYMST') }}</p>
+        @else
+            <div class="overflow-x-auto">
+                <table id="myTable" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                {{ __('guru.Nama_Kelompok') }}
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                {{ __('guru.Jumlah_Anggota') }}
+                            </th>
+                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase">
+                                {{ __('guru.Studi_Kasus') }}</th>
+                            @foreach ($aktivitas as $act)
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                                    {{ $act->nama_aktivitas }}
+                                </th>
+                            @endforeach
+
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                {{ __('guru.Progress') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($kelompoks as $kelompok)
+                            <tr>
+                                <td class="px-6 py-4 text-gray-900">
+                                    <a href="{{ route('guru.penilaian', [
+                                        'mapel_slug' => $mapel->slug,
+                                        'siklus_slug' => $siklus->slug, // Menggunakan $siklus dari view sebelumnya
+                                        'kelompok_id' => $kelompok->id,
+                                    ]) }}"
+                                        class="text-blue-600 hover:underline">
+                                        {{ $kelompok->nama_kelompok_pjbl }}
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 text-gray-700">{{ $kelompok->jumlah_anggota }}</td>
+                                <td class="px-3 py-2 text-gray-700">
+                                    @php
+                                        $texts = $kelompok->studi_kasus->pluck('studi_kasus')->toArray();
+                                        $fullText = implode(', ', $texts);
+                                        $count = count($texts);
+                                    @endphp
+
+                                    <span title="{{ $fullText }}" class="underline cursor-help">
+                                        {{ __('guru.Studi_Kasus') }}
+                                    </span>
+                                </td>
+
+                                @foreach ($aktivitas as $act)
+                                    @php
+                                        $status = $kelompok->status_syntax[$act->id];
+                                    @endphp
+
+                                    <td class="px-6 py-4 text-center text-gray-700">
+                                        @if ($status == 2)
+                                            <span class="text-green-600 font-bold">✔️</span>
+                                        @elseif ($status == 1)
+                                            <span class="text-yellow-500 font-bold">⏳</span>
+                                        @else
+                                            <span class="text-gray-400 font-bold">❌</span>
+                                        @endif
+                                    </td>
+                                @endforeach
+
+                                <td class="px-3 py-4 text-gray-700">
+                                    <a href="{{ route('guru.aktivitas_pjbl.kelompok_pjbl.detail', [
+                                        // Ganti 'mapel' menjadi 'mapel_slug'
+                                        'mapel_slug' => $mapel->slug,
+                                        // Ganti 'kelompok_pjbl' menjadi 'kelompok_id'
+                                        'kelompok_id' => $kelompok->id,
+                                    ]) }}"
+                                        class="block w-full">
+
+                                        <div class="w-full bg-gray-200 rounded-full h-4 hover:opacity-80 transition">
+                                            <div class="bg-green-500 h-4 rounded-full text-xs text-white text-center"
+                                                style="width: {{ $kelompok->progress }}%;">
+                                                {{ $kelompok->progress }}%
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
-                    </select>                        
-                </div>
-        
-                <!-- Textarea Studi Kasus -->
-                <!-- Textarea Studi Kasus -->
-                <div>
-                    <label for="studi_kasus" class="block text-sm font-medium text-gray-700 mb-2">Studi Kasus</label>
-                    <textarea name="studi_kasus" id="studi_kasus" rows="5"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
-                        placeholder="Tuliskan studi kasus di sini..." required></textarea>
-                </div>
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </section>
 
-
-                <!-- Aksi -->
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="toggleModal(false)" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Kirim</button>
-                </div>
-            </form>
-
-            <!-- Tombol Close -->
-            <button onclick="toggleModal(false)" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg font-bold">&times;</button>
-        </div>
-    </div>
-
-    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#myTable').DataTable();
         });
-
-        function toggleModal(show) {
-            const modal = document.getElementById('modalForm');
-            modal.classList.toggle('hidden', !show);
-        }
     </script>
 </x-layout-guru>

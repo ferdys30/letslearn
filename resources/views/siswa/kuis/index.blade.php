@@ -23,7 +23,7 @@
             </div>
 
             <!-- Konten Kuis -->
-            <div class="w-3/4 p-6 bg-gray-50 rounded-lg shadow-inner">
+            <div class="w-3/4 p-6 bg-gray-50 rounded-lg shadow-inner border-b-4 border-purple-600">
                 @foreach ($kuisList as $kuis)
                     <div x-show="tab === '{{ $kuis->id }}'">
                         @if ($kuis->terkunci)

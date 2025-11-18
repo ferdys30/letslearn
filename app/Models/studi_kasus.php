@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class studi_kasus extends Model
 {
-    protected $fillable = ['id_mapel','id_kelompok','studi_kasus'];
+    protected $table ='studi_kasus';
+    protected $fillable = ['id_mapel','id_kelompok_pjbl','studi_kasus'];
 
-    public function mata_pelajaran(): BelongsTo
+    public function Mapel(): BelongsTo
     {
-        return $this->belongsTo(mata_pelajaran::class,'id_mapel');
+        return $this->belongsTo(Mapel::class,'id_mapel');
     }
-    public function kelompok(): BelongsTo
+    public function kelompok_pjbl(): BelongsTo
     {
-        return $this->belongsTo(kelompok::class, 'id_kelompok');
+        return $this->belongsTo(kelompok_pjbl::class, 'id_kelompok_pjbl');
     }
 
 }

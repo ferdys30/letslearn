@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_mapel')->constrained(
-                table: 'mata_pelajarans',
+                table: 'Mapels',
                 indexName: 'id'
             );
             $table->string('urutan_materi');

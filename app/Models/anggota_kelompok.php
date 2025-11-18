@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class anggota_kelompok extends Model
 {
-    protected $fillable = ['id_kelompok','id_user'];
+    protected $table ='anggota_kelompok';
+    protected $fillable = ['id_kelompok_pjbl','id_user','id_posisi'];
 
-    public function kelompok(): BelongsTo
+    public function kelompok_pjbl(): BelongsTo
     {
-        return $this->belongsTo(kelompok::class,'id_kelompok');
+        return $this->belongsTo(kelompok_pjbl::class,'id_kelompok_pjbl');
     }
 
     public function user(): BelongsTo
@@ -23,4 +24,11 @@ class anggota_kelompok extends Model
     {
         return $this->belongsTo(Posisi::class, 'id_posisi');
     }
+    public function indikator() {
+        return $this->hasMany(indikator_penilaian::class, 'id_posisi', 'id_posisi');
+    }
+    public function tugas()
+{
+    return $this->hasMany(\App\Models\Tugas::class, 'id_anggota_kelompok');
+}
 }

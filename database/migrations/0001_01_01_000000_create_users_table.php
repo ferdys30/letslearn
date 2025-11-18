@@ -11,24 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->integer('nis')->unique()->nullable();
-            $table->integer('nip')->nullable();
-            $table->string('nama');
-            $table->string('foto')->nullable();
-            $table->string('jurusan')->nullable();
-            $table->integer('kelas')->nullable();
-            $table->string('kelas_detail')->nullable();
-            $table->string('alamat')->nullable();
-            $table->string('email')->unique();
-            // $table->timestamp('email_verified_at')->nullable();
-            $table->string('username');
-            $table->string('password');
-            $table->integer('id_role');
-            // $table->rememberToken();
-            $table->timestamps();
-        });
+            Schema::create('users', function (Blueprint $table) {
+                $table->id();
+                $table->integer('nis')->unique()->nullable();
+                $table->integer('nip')->nullable();
+                $table->string('nama');
+                $table->string('foto')->nullable();
+                $table->string('jurusan')->nullable();
+
+                $table->foreignId('id_kelas')
+                    ->nullable()
+                    ->constrained('Kelas')
+                    ->onDelete('set null');
+
+                $table->string('paralel')->nullable();
+                $table->string('alamat')->nullable();
+                $table->string('email')->unique()->nullable(); // nullable sesuai controller
+                $table->string('username')->unique();
+                $table->string('password');
+                $table->integer('id_role');
+                $table->timestamps();
+            });
+
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

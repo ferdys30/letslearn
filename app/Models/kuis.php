@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Kuis extends Model
 {
+    protected $table='kuis';
     protected $fillable = ['id_mapel','urutan_kuis','judul','deskripsi_kuis','waktu_pengerjaan'];
 
-    public function mata_pelajaran(): BelongsTo
+    public function Mapel(): BelongsTo
     {
-        return $this->belongsTo(mata_pelajaran::class, 'id_mapel');
+        return $this->belongsTo(Mapel::class, 'id_mapel');
     }
 
     public function penilaians(): HasMany
@@ -23,4 +24,5 @@ class Kuis extends Model
     {
         return $this->hasMany(Soal::class, 'id_kuis');
     }
+    
 }

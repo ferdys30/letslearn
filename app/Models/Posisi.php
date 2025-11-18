@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Posisi extends Model
 {
-    protected $fillable = ['id_mapel','nama_posisi'];
+    protected $table ='posisis';
+    protected $fillable = ['id_mapel','id_siklus_pjbl','nama_posisi'];
 
-    public function mata_pelajaran(): BelongsTo
+    public function Mapel(): BelongsTo
     {
-        return $this->belongsTo(mata_pelajaran::class, 'id_mapel');
+        return $this->belongsTo(Mapel::class, 'id_mapel');
     }
     public function anggota_kelompok()
     {

@@ -12,8 +12,8 @@ class tujuan_pembelajaran extends Model
     protected $fillable = ['id_mapel','tujuan_pembelajaran'];
 
 
-    public function mata_pelajaran(): BelongsTo
+    public function Mapel(): BelongsTo
     {
-        return $this->belongsTo(mata_pelajaran::class,'id_mapel');
+        return $this->belongsTo(Mapel::class,'id_mapel');
     }
 }

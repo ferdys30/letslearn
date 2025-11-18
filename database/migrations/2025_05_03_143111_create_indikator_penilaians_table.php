@@ -14,18 +14,27 @@ return new class extends Migration
         Schema::create('indikator_penilaians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_mapel')->constrained(
-                table: 'mata_pelajarans',
+                table: 'Mapels',
                 indexName: 'id'
             );
+            $table->foreignId('id_siklus_pjbl')->constrained(
+                table: 'siklus_pjbls',
+                indexName: 'id'
+            );
+            // $table->foreignId('id_posisi')->constrained(
+            //     table: 'Posisis',
+            //     indexName: 'id'
+            // );
             // $table->unsignedBigInteger('id_user');
             // $table->foreign('id_user')->references('id')->on('users');
             $table->string('indikator_penilaian');
             $table->integer('skema');
+            $table->string('nilai_maks');
             $table->string('skala_1');
             $table->string('skala_2');
             $table->string('skala_3');
             $table->string('skala_4');
-            $table->string('skala_5');
+            // $table->string('skala_5');
             $table->timestamps();
         });
     }

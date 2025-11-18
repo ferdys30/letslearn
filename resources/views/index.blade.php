@@ -29,13 +29,13 @@
 
     <!-- Section Kelas -->
     @auth
-    <section class="container mx-auto px-6 lg:px-20 py-12 bg-white rounded-md">
+    <section class="container mx-auto px-6 lg:px-20 py-12 bg-white rounded-md border-b-4 border-purple-600">
         <h2 class="text-3xl font-bold text-gray-800 text-left">Kelas Saya</h2>
         {{-- <p class="text-gray-600 text-left mt-2">Pilih kelas yang ingin kamu pelajari!</p> --}}
 
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 ">
             @forelse ($mapel as $item)
-                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center border-b-4 border-purple-600">
                     <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $item->nama_mapel }}</h3>
                         <p class="text-gray-600 mt-2">{{ $item->deskripsi_mapel }}</p>
                     <a href="/siswa/kelas/{{ $item->slug }}/fitur" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
@@ -55,7 +55,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
   
               <!-- Alasan 1 -->
-              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center border-b-4 border-purple-600">
                   <div class="text-blue-500 text-5xl mb-4">
                       ⭐
                   </div>
@@ -64,7 +64,7 @@
               </div>
   
               <!-- Alasan 2 -->
-              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center border-b-4 border-purple-600">
                   <div class="text-green-500 text-5xl mb-4">
                       🚀
                   </div>
@@ -73,7 +73,7 @@
               </div>
   
               <!-- Alasan 3 -->
-              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center border-b-4 border-purple-600">
                   <div class="text-yellow-500 text-5xl mb-4">
                       🔒
                   </div>
@@ -82,7 +82,7 @@
               </div>
   
               <!-- Alasan 4 -->
-              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+              <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center border-b-4 border-purple-600">
                   <div class="text-red-500 text-5xl mb-4">
                       🎯
                   </div>
@@ -101,7 +101,7 @@
         items: [
             { title: 'Kuis', description: 'Uji pemahaman kamu dengan kuis interaktif.', link: '/siswa/kelas?fitur=Kuis', bg: 'bg-gradient-to-r from-blue-500 to-indigo-600'  },
             { title: 'Materi', description: 'Pelajari konsep dasar hingga tingkat lanjut.', link: '/siswa/kelas?fitur=Materi', bg: 'bg-gradient-to-r from-green-500 to-teal-600' },
-            { title: 'Project Based Learning', description: 'Bangun proyek nyata dengan metode PBL.', link: '/siswa/kelas?fitur=pjbl', bg: 'bg-gradient-to-r from-purple-500 to-pink-600' }
+            { title: 'Project Based Learning', description: 'Bangun proyek nyata dengan metode PBL.', link: '/siswa/kelas?fitur=aktivitas_pjbl', bg: 'bg-gradient-to-r from-purple-500 to-pink-600' }
         ]
     }" 
     x-init="setInterval(() => activeIndex = (activeIndex + 1) % items.length, 3000)" 

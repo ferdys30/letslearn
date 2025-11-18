@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tugas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_penugasan')->constrained('penugasans')->onDelete('cascade');
-            $table->foreignId('id_pjbl')->constrained('pjbls')->onDelete('cascade');
-            $table->foreignId('id_anggota_kelompok')->constrained('anggota_kelompoks')->onDelete('cascade');
-            $table->string('judul');
-            $table->text('deskripsi');
-            $table->date('deadline');
+            $table->foreignId('id_siklus_pjbl')->constrained('siklus_pjbls')->onDelete('cascade');
+            $table->foreignId('id_aktivitas_pjbl')->constrained('aktivitas_pjbls')->onDelete('cascade');
+            $table->foreignId('id_anggota_kelompok')->constrained('anggota_kelompok')->onDelete('cascade');
+            $table->string('judul')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->date('deadline')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

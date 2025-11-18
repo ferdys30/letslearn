@@ -40,10 +40,13 @@
                 <div x-show="tab === 'materi{{ $index }}'">
                     <h2 class="text-xl font-semibold text-gray-700">{{ $item->urutan_materi }}</h2>
                     <p class="mt-2 text-gray-600">{{ $item->deskripsi_materi }}</p>
-
                     @if($item->dokumen_materi)
+                    @php
+                        $path = storage_path('app/public/' . $item->dokumen_materi);
+                        $base64 = base64_encode(file_get_contents($path));
+                    @endphp
                         <div class="mt-4">
-                            <iframe src="{{ asset('storage/dokumen_materi/' . $item->dokumen_materi) }}" class="w-full h-[500px] border rounded" frameborder="0"></iframe>
+                            <iframe src="data:application/pdf;base64,{{ $base64 }}" class="w-full h-[500px] border rounded" frameborder="0"></iframe>
                         </div>
                     @endif
                 </div>

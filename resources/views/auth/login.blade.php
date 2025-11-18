@@ -27,7 +27,7 @@
                         {{ session('LoginError') }}
                     </div>
                 @endif
-                <form action="/login" method="post">
+                <form action="{{ route('login.proses') }}" method="post">
                     @csrf
                     {{-- Username --}}
                     <div class="mb-4">

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tujuan_pembelajarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_mapel')->constrained(
-                table: 'mata_pelajarans',
+                table: 'Mapels',
                 indexName: 'id'
             );
             // $table->unsignedBigInteger('id_user');

@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\mata_pelajaran;
+use App\Models\Mapel;
 use Illuminate\Support\Facades\Auth;
 
 class KelasController extends Controller
 {
     public function index(Request $request)
     {
-        $fitur = $request->query('fitur'); // menangkap 'kuis', 'materi', 'pjbl'
-
+        $fitur = $request->query('fitur'); // menangkap 'kuis', 'materi', 'aktivitas_pjbl'
+        
         $user = Auth::user();
 
-
-        // Ambil semua mapel yang sesuai kelas user
-        $mapel = mata_pelajaran::where('kelas', $user->kelas)
-                    ->get();
+        // Ambil semua mapel yang sesuai id_kelas user
+        $mapel = Mapel::where('id_kelas', $user->id_kelas)->get();
+        // dd($mapel);
 
         return view('siswa.kelas.index', [
             'tittle' => 'Pilih Kelas',
@@ -28,7 +27,7 @@ class KelasController extends Controller
 
     public function fitur(Request $request,$slug)
     {
-        $mapel =mata_pelajaran::where('slug', $slug)->firstOrFail();
+        $mapel =Mapel::where('slug', $slug)->firstOrFail();
         return view('siswa.kelas.fitur', [
             'tittle' => 'Dashboard',
             'mapel' => $mapel

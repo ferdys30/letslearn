@@ -7,10 +7,10 @@
     <div class="w-1/2 border-r border-gray-300 p-4 overflow-y-auto">
         <h2 class="text-xl font-bold mb-4">Hasil Diskusi Ferdy</h2>
         <div id="chatBox" class="space-y-6">
-          <!-- Bagian PJBL 1 -->
+          <!-- Bagian aktivitas_pjbl 1 -->
           <div>
             <div class="text-center text-lg font-semibold text-purple-700 border-t border-gray-300 pt-4 mb-2 uppercase tracking-wide">
-              🧩 Bagian PJBL 1
+              🧩 Bagian aktivitas_pjbl 1
             </div>
             <div class="bg-white p-3 rounded-lg shadow">
               <p class="text-sm text-gray-800">👤 <strong>Ana</strong>: Halo semuanya!</p>
@@ -22,10 +22,10 @@
             </div>
           </div>
         
-          <!-- Bagian PJBL 2 -->
+          <!-- Bagian aktivitas_pjbl 2 -->
           <div>
             <div class="text-center text-lg font-semibold text-purple-700 border-t border-gray-300 pt-4 mb-2 uppercase tracking-wide">
-              🧩 Bagian PJBL 2
+              🧩 Bagian aktivitas_pjbl 2
             </div>
             <div class="bg-white p-3 rounded-lg shadow">
               <p class="text-sm text-gray-800">👤 <strong>Budi</strong>: Bagaimana Cara untuk menyimpulkannya!</p>

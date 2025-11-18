@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\mata_pelajaran;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 use App\Models\materi;
 
 class MateriController extends Controller
 {
-    public function siswa(mata_pelajaran $mapel)
+    public function siswa(Mapel $mapel)
     {
         // Ambil materi yang hanya milik mapel ini
         $materi = $mapel->materi;
@@ -20,16 +20,26 @@ class MateriController extends Controller
         ]);
     }
 
-    public function guru(mata_pelajaran $mapel){
+    public function guru(Mapel $mapel)
+    {
+        // Cek apakah Mapel berhasil dibinding (Anda sudah konfirmasi ini berhasil)
+        // dd($mapel); 
+
+        // Cek apakah relasi Materi berhasil dimuat
         $materi = $mapel->materi;
+
+        // Cek apakah variabel $materi berisi data.
+        // dd($materi); // Jika ini mengembalikan Collection kosong (count: 0) atau null, berarti tidak ada data materi untuk mapel ini.
 
         return view('guru/materi/index', [
             'tittle' => 'Materi',
             'materi' => $materi,
-            'mapel'=> $mapel
+            'mapel' => $mapel
         ]);
     }
-    public function store(Request $request)
+
+    
+    public function store_materi(Request $request)
     {
         $request->validate([
             'id_mapel' => 'required',
@@ -54,6 +64,27 @@ class MateriController extends Controller
 
         return redirect()->back();
     }
+
+    public function update_materi(Request $request, $id)
+    {
+        $materi = Materi::findOrFail($id);
+        $materi->judul = $request->judul_materi;
+        $materi->urutan_materi = $request->urutan_materi;
+        $materi->deskripsi_materi = $request->deskripsi_materi;
+        // handle dokumen_materi jika diperlukan
+        $materi->save();
+
+        return redirect()->back()->with('success', 'Materi berhasil diperbarui.');
+    }
+
+    public function destroy_materi($id)
+    {
+        $materi = Materi::findOrFail($id);
+        $materi->delete();
+
+        return redirect()->back()->with('success', 'Materi berhasil dihapus.');
+    }
+
 
     public function byMapel($id_mapel)
     {

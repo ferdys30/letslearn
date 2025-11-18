@@ -1,4 +1,4 @@
-<nav class="bg-gray-800" x-data="{ isOpen: false, isLoggedIn: false }">
+<nav class="fixed top-0 inset-x-0 bg-gray-800 z-50 shadow-md" x-data="{ isOpen: false, isLoggedIn: false }">
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
         <!-- Logo -->
@@ -11,8 +11,8 @@
             <x-nav-link-siswa href="/" :active="request()->is('/')">Home</x-nav-link-siswa>
             @auth
                 <x-nav-link-siswa href="/siswa/kelas?fitur=materi" :active="request()->is('/siswa/kelas?fitur=materi')">Materi</x-nav-link-siswa>
-                {{-- <x-nav-link-siswa href="/siswa/pjbl" :active="request()->is('siswa/pjbl')">Project Based Learning</x-nav-link-siswa> --}}
-                <x-nav-link-siswa href="/siswa/kelas?fitur=pjbl" :active="request()->is('/siswa/kelas?fitur=pjbl')">Project Based Learning</x-nav-link-siswa>
+                {{-- <x-nav-link-siswa href="/siswa/aktivitas_pjbl" :active="request()->is('siswa/aktivitas_pjbl')">Project Based Learning</x-nav-link-siswa> --}}
+                <x-nav-link-siswa href="/siswa/kelas?fitur=aktivitas_pjbl" :active="request()->is('/siswa/kelas?fitur=aktivitas_pjbl')">Project Based Learning</x-nav-link-siswa>
                 <x-nav-link-siswa href="/siswa/kelas?fitur=kuis" :active="request()->is('/siswa/kelas?fitur=kuis')">Kuis</x-nav-link-siswa>
             @endauth
 
@@ -46,7 +46,7 @@
                 @guest
                     <div class="flex space-x-2">
                         <a href="/login" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Login</a>
-                        <a href="/register" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
+                        <a href="/regist" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
                     </div>
                 @endguest
         </div>
@@ -70,7 +70,7 @@
     <div class="px-2 pt-2 pb-3 space-y-1">
         <a href="/" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
         <a href="/siswa/materi" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Materi</a>
-        <a href="/siswa/pjbl/kelompok" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Project Based Learning</a>
+        <a href="/siswa/aktivitas_pjbl/kelompok_pjbl" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Project Based Learning</a>
         <a href="/siswa/kuis" class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Kuis</a>
     </div>
 

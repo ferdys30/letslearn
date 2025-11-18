@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
 
     <!-- Section: Selamat Datang -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
+    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6 border-b-4 border-purple-600">
         <h1 class="text-2xl font-bold text-gray-800">Tambahkan Materi</h1>
         <p class="text-gray-600 mt-1">{{ $mapel->nama_mapel }}</p>
     </section>
@@ -22,18 +22,37 @@
                     <th>Judul Materi</th>
                     <th>Deskripsi Materi</th>
                     <th>Dokumen Materi (PDF/Word)</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($materi as $m)
-                     <tr>
-                        <td>{{ $m->urutan_materi }}</td>
-                        <td>{{ $m->judul }}</td>
-                        <td>{{ $m->deskripsi_materi }}</td>
-                        <td>{{ basename($m->dokumen_materi) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
+            @foreach ($materi as $m)
+                <tr>
+                    <td>{{ $m->urutan_materi }}</td>
+                    <td>{{ $m->judul }}</td>
+                    <td>{{ $m->deskripsi_materi }}</td>
+                    <td>{{ basename($m->dokumen_materi) }}</td>
+                    <td class="flex gap-2">
+                        <!-- Tombol Edit (bisa redirect ke halaman edit atau trigger modal) -->
+                        <button type="button"
+                            onclick="openEditModal({{ $m->id }}, '{{ $m->judul }}', {{ $m->urutan_materi }}, `{{ $m->deskripsi_materi }}`)"
+                            class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Edit
+                        </button>
+
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('guru.materi.destroy', $m->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus materi ini?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+
         </table>
     </section>
 
@@ -82,6 +101,62 @@
         </div>
     </div>
 
+    <div id="modalFormEdit" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Edit Materi</h3>
+
+            <form id="formEditMateri" method="POST" enctype="multipart/form-data" class="space-y-4">
+                @csrf
+                @method('PUT')
+
+                <!-- Input Urutan Materi -->
+                <div>
+                    <label for="edit_urutan_materi" class="block mb-2 text-sm font-medium text-gray-900">Urutan Materi</label>
+                    <input type="number" name="urutan_materi" id="edit_urutan_materi"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                        placeholder="Contoh: 1, 2, 3..." required>
+                </div>
+
+                <!-- Input Judul Materi -->
+                <div>
+                    <label for="edit_judul_materi" class="block mb-2 text-sm font-medium text-gray-900">Judul Materi</label>
+                    <input type="text" name="judul_materi" id="edit_judul_materi"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                        placeholder="Contoh: HTML, CSS, dll" required>
+                </div>
+
+                <!-- Deskripsi -->
+                <div>
+                    <label for="edit_deskripsi_materi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi Materi</label>
+                    <textarea name="deskripsi_materi" id="edit_deskripsi_materi" rows="4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                            placeholder="Contoh: Pengenalan HTML, CSS Flexbox, dll" required></textarea>
+                </div>
+
+                <!-- Dokumen (opsional) -->
+                <div>
+                    <label for="edit_dokumen_materi" class="block mb-2 text-sm font-medium text-gray-900">Upload Dokumen (PDF/Word)</label>
+                    <input type="file" name="dokumen_materi" id="edit_dokumen_materi"
+                        accept=".pdf,.doc,.docx"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="toggleEditModal(false)"
+                            class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Batal</button>
+                    <button type="submit"
+                            class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Simpan</button>
+                </div>
+            </form>
+
+            <!-- Tombol Close -->
+            <button onclick="toggleEditModal(false)" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg font-bold">&times;</button>
+        </div>
+    </div>
+
+
+
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
@@ -95,4 +170,25 @@
             modal.classList.toggle('hidden', !show);
         }
     </script>
+    <script>
+        function toggleEditModal(show) {
+            const modal = document.getElementById('modalFormEdit');
+            modal.classList.toggle('hidden', !show);
+        }
+
+        function openEditModal(id, judul, urutan, deskripsi) {
+            // Isi data ke form
+            document.getElementById('edit_judul_materi').value = judul;
+            document.getElementById('edit_urutan_materi').value = urutan;
+            document.getElementById('edit_deskripsi_materi').value = deskripsi;
+
+            // Atur action-nya
+            const form = document.getElementById('formEditMateri');
+            form.action = `/guru/update/materi/${id}`;
+
+            // Tampilkan modal
+            toggleEditModal(true);
+        }
+    </script>
+
 </x-layout-guru>

@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
 
     <!-- Section: Selamat Datang -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
+    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6 border-b-4 border-purple-600">
         <h1 class="text-2xl font-bold text-gray-800">Tambahkan Kuis</h1>
         <p class="text-gray-600 mt-1">Pemrograman Website</p>
     </section>
@@ -33,10 +33,15 @@
                         <td>{{ $kuis->deskripsi_kuis }}</td>
                         <td>{{ $kuis->waktu_pengerjaan }}</td>
                         <td>
-                            <a href="{{ route('guru.kuis.soal', ['kuis' => $kuis,'mapel'=>$mapel]) }}"
+                            <a href="{{ route('guru.soal', ['kuis' => $kuis,'mapel'=>$mapel]) }}"
                             style="background-color: #006400; color: white; border: none;margin: 10px ; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
                                 Soal
                             </a>
+                            <button 
+                                onclick='editKuis(@json($kuis))'
+                                style="background-color: #6A0DAD; color: white; border: none; margin: 10px; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                Edit
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -50,7 +55,7 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tambah Kuis</h3>
 
-            <form action="{{ route('guru.kuis.soal.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('guru.kuis.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_mapel" value="1">
 
@@ -90,6 +95,49 @@
         </div>
     </div>
 
+    <div id="modalEditKuis" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-md shadow-md w-full max-w-lg">
+            <h3 class="text-xl font-bold mb-4">Edit Kuis</h3>
+            <form method="POST" id="formEditKuis" action="">
+                @csrf
+                @method('PUT')
+
+                <input type="hidden" name="id_mapel" value="{{ $mapel->id }}">
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Urutan Kuis</label>
+                    <input type="text" name="urutan_kuis" id="editUrutanKuis" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Judul</label>
+                    <input type="text" name="judul" id="editJudulKuis" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Deskripsi</label>
+                    <textarea name="deskripsi_kuis" id="editDeskripsiKuis" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Waktu Pengerjaan</label>
+                    <input type="text" name="waktu_pengerjaan" id="editWaktuKuis" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="document.getElementById('modalEditKuis').classList.add('hidden')"
+                            class="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded mr-2">
+                        Batal
+                    </button>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -104,4 +152,20 @@
             modal.classList.toggle('hidden', !show);
         }
     </script>
+    <script>
+        const routeEditKuis = `{{ route('guru.kuis.update', ':id') }}`; // gunakan placeholder
+
+        function editKuis(kuis) {
+            const form = document.getElementById('formEditKuis');
+            form.action = routeEditKuis.replace(':id', kuis.id); // ganti :id dengan kuis.id
+
+            document.getElementById('editUrutanKuis').value = kuis.urutan_kuis;
+            document.getElementById('editJudulKuis').value = kuis.judul;
+            document.getElementById('editDeskripsiKuis').value = kuis.deskripsi_kuis;
+            document.getElementById('editWaktuKuis').value = kuis.waktu_pengerjaan;
+
+            document.getElementById('modalEditKuis').classList.remove('hidden');
+        }
+    </script>
+
 </x-layout-guru>

@@ -12,10 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    protected $table = 'users';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
-    protected $with= ['mata_pelajaran','anggota_kelompok','diskusi','pengumpulan','penilaian'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,11 +22,19 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'nis','nip','nama','foto','jurusan','kelas','alamat',
-        'email',
-        'username',
-        'password',
-    ];
+    'nis',
+    'nip',
+    'nama',
+    'foto',
+    'jurusan',
+    'id_kelas',
+    'paralel',
+    'alamat',
+    'email',
+    'username',
+    'password',
+    'id_role', // ✅ Tambahkan ini!
+];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -39,6 +46,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $casts = [
+        'id_role' => 'integer',
+    ];
     /**
      * Get the attributes that should be cast.
      *
@@ -57,9 +67,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function mata_pelajaran(): HasMany
+    public function Mapel(): HasMany
     {
-        return $this->hasMany(mata_pelajaran::class, 'id_user');
+        return $this->hasMany(Mapel::class, 'id_user');
     }
 
     public function anggota_kelompok(): HasMany
@@ -72,13 +82,18 @@ class User extends Authenticatable
         return $this->hasMany(diskusi::class,'id_user');
     }
 
-    public function pengumpulan(): HasMany
+    public function pengumpulan_tugas(): HasMany
     {
-        return $this->hasMany(pengumpulan::class,'id_user');
+        return $this->hasMany(pengumpulan_tugas::class,'id_user');
     }
 
-    public function penilaian(): HasMany
+    public function penilaians(): HasMany
     {
         return $this->hasMany(penilaian::class,'id_user');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 }

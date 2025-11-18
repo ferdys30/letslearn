@@ -4,12 +4,12 @@
 
     <!-- Section Tabel -->
     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-      <h2 class="text-3xl font-bold text-gray-800 text-left">Data Kelompok</h2>
+      <h2 class="text-3xl font-bold text-gray-800 text-left">Data kelompok_pjbl</h2>
       <table id="myTable" class="display">
           <thead> 
               <tr>
                   {{-- <th>No</th> --}}
-                  <th>Kelompok</th>
+                  <th>kelompok_pjbl</th>
                   <th>Studi Kasus Yang Didapatkan</th>
                   <th>Anggota</th>
                   <th>Progres Pengerjaan</th>
@@ -18,9 +18,9 @@
               </tr>
           </thead>
           <tbody>
-            @foreach ($kelompok as $klmpk)
+            @foreach ($kelompok_pjbl as $klmpk)
             <tr>
-                <td>{{ $klmpk->nama_kelompok }}</td>
+                <td>{{ $klmpk->nama_kelompok_pjbl }}</td>
                 <td>
                     <ol>
                         @foreach ($klmpk->studi_kasus as $item)
@@ -37,7 +37,7 @@
                 </td>
                 <td>
                     <div class="relative pt-1">
-                        <a href="/guru/pjbl/diskusi">
+                        <a href="/guru/aktivitas_pjbl/diskusi">
                             <div class="flex mb-2 items-center justify-between">
                                 <span class="text-xs font-semibold inline-block py-1 uppercase">Progress</span>
                                 <span class="text-xs font-semibold inline-block py-1 uppercase">{{ $klmpk->progress }}%</span>

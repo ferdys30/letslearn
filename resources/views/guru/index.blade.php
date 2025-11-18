@@ -4,87 +4,65 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
 
     <!-- Section: Selamat Datang -->
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Selamat Datang, Pak Adi 👋</h1>
+    @role('guru')
+    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6 border-b-4 border-purple-600">
+        <h1 class="text-2xl font-bold text-gray-800">Selamat Datang, Pak {{ Auth::user()->nama }}</h1>
         <p class="text-gray-600 mt-1">Senang melihat Anda kembali! Silakan pilih kelas atau lihat data yang tersedia.</p>
     </section>
-
-    {{-- Cek jika ada flash message untuk alert --}}
-    {{-- @if (session('pengumpulan_alert'))
-        <div class="mt-2 mb-2 p-4 rounded-md bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800">
-            <strong class="font-semibold">Perhatian!</strong> {{ session('pengumpulan_alert') }}
-        </div>
-    @endif
-
-     <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-        <h2 class="text-3xl font-bold text-gray-800 text-left">Data Kelompok</h2>
-        <table id="myTable" class="display">
-            <thead>
-                <tr>
-                    <th>Kelompok</th>
-                    <th>Studi Kasus Yang Didapatkan</th>
-                    <th>Anggota</th>
-                    <th>Progres Pengerjaan</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                @foreach ($kelompok as $klmpk)
-                    <tr>
-                        <td>{{ $klmpk->nama_kelompok }}</td>
-                        <td>
-                            <ol>
-                                @foreach ($studi_kasus->where('id_kelompok', $klmpk->id) as $item)
-                                    <li>{{ $loop->iteration }}. {{ $item->studi_kasus }}</li>
-                                @endforeach
-                            </ol>
-                        </td>
-                        <td>
-                            <ol>
-                                @foreach ($anggota->where('id_kelompok', $klmpk->id) as $item)
-                                    <li>{{ $loop->iteration }}. {{ $item->user->nama }}</li>
-                                @endforeach
-                            </ol>
-                        </td>
-                        <td>
-                            <div class="relative pt-1">
-                                <a href="/guru/pjbl/kelompok/{{ $klmpk->nama_kelompok }}">
-                                    <div class="flex mb-2 items-center justify-between">
-                                        <span class="text-xs font-semibold inline-block py-1 uppercase">Progress</span>
-                                        <span class="text-xs font-semibold inline-block py-1 uppercase">
-                                            {{ $klmpk->progress }}%
-                                        </span>
-                                    </div>
-                                </a>
-                                <div class="flex mb-2">
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $klmpk->progress }}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </section> --}}
-
+    @endrole
     
-    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6">
-      <h2 class="text-3xl font-bold text-gray-800 text-left">Kelas Saya</h2>
+    <section class="px-6 py-6 bg-white shadow-md rounded-md mb-6 border-b-4 border-purple-600">
+    @role('admin')
+        <h2 class="text-3xl font-bold text-gray-800 text-left mb-4">Halaman Admin</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {{-- Mata Pelajaran --}}
+            <a href="{{ route('admin.mapel') }}" class="block p-5 bg-blue-100 rounded-lg shadow hover:bg-blue-200 transition">
+                <h3 class="text-lg font-semibold text-blue-800 mb-2">Mata Pelajaran</h3>
+                <p class="text-sm text-blue-700">Kelola daftar mapel dan guru pengampu.</p>
+            </a>
+
+            {{-- Data Guru --}}
+            <a href="{{ route('admin.guru') }}" class="block p-5 bg-green-100 rounded-lg shadow hover:bg-green-200 transition">
+                <h3 class="text-lg font-semibold text-green-800 mb-2">Data Guru</h3>
+                <p class="text-sm text-green-700">Lihat dan kelola informasi guru.</p>
+            </a>
+
+            {{-- Data Siswa --}}
+            <a href="{{ route('admin.siswa') }}" class="block p-5 bg-yellow-100 rounded-lg shadow hover:bg-yellow-200 transition">
+                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Data Siswa</h3>
+                <p class="text-sm text-yellow-700">Kelola siswa per kelas dan informasi lainnya.</p>
+            </a>
+
+            {{-- Kelas --}}
+            <a href="{{ route('admin.kelas') }}" class="block p-5 bg-purple-100 rounded-lg shadow hover:bg-purple-200 transition">
+                <h3 class="text-lg font-semibold text-purple-800 mb-2">Kelas</h3>
+                <p class="text-sm text-purple-700">Manajemen kelas dan struktur pembelajaran.</p>
+            </a>
+        </div>
+    @endrole
+    @role('guru')
+    <h2 class="text-3xl font-bold text-gray-800 text-left">Kelas Saya</h2>
       {{-- <p class="text-gray-600 text-left mt-2">Pilih kelas yang ingin kamu pelajari!</p> --}}
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        @if($mapelList->isEmpty())
+            <div class="text-gray-600 text-center py-4">
+                Belum ada mata pelajaran yang ditambahkan.
+            </div>
+        @else
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach($mapelList as $mapel)
-                <!-- Card Pemrograman Web -->
-                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-                    <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $mapel->nama_mapel }}</h3>
-                    <p class="text-gray-600 mt-2">{{ $mapel->deskripsi_mapel }}</p>
-                    <a href="{{ route('guru.mapel', $mapel->slug) }}" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
-                        Lihat Kelas
-                    </a>
-                </div>
+                    <!-- Card Mata Pelajaran -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center border-b-4 border-purple-600">
+                        <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $mapel->nama_mapel }}</h3>
+                        <p class="text-gray-600 mt-2">{{ $mapel->deskripsi_mapel }}</p>
+                        <a href="{{ route('guru.mapel', $mapel->slug) }}" class="mt-4 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
+                            Lihat Kelas
+                        </a>
+                    </div>
                 @endforeach
             </div>
+        @endif
+    @endrole
     </section>
 
 

@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('diskusis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_kelompok')->constrained(
-                table: 'kelompoks',
+            $table->foreignId('id_kelompok_pjbl')->constrained(
+                table: 'kelompok_pjbl',
                 indexName: 'id'
             );
-            $table->foreignId('id_pjbl')->constrained(
-                table: 'pjbls',
+            $table->foreignId('id_aktivitas_pjbl')->constrained(
+                table: 'aktivitas_pjbls',
                 indexName: 'id'
             );
             $table->foreignId('id_user')->constrained(
                 table: 'users',
+                indexName: 'id'
+            );
+            $table->foreignId('id_siklus_pjbl')->constrained(
+                table: 'siklus_pjbls',
                 indexName: 'id'
             );
             $table->integer('parent_id')->nullable();

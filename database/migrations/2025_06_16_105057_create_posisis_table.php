@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('posisis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_mapel')->constrained(
-                table: 'mata_pelajarans',
+                table: 'Mapels',
+                indexName: 'id'
+            );
+            $table->foreignId('id_siklus_pjbl')->constrained(
+                table: 'siklus_pjbls',
                 indexName: 'id'
             );
             $table->string('nama_posisi');
