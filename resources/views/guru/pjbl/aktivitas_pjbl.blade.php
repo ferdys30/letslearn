@@ -110,6 +110,8 @@
                         <option value="1">Text Field</option>
                         <option value="2">File Input</option>
                         <option value="3">Penugasan</option>
+                        <option value="4">Penugasan dengan Deadline</option>
+                        <option value="5">Trello</option>
                         <option value="">None</option>
                     </select>
                 </div>
