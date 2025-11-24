@@ -14,16 +14,18 @@ use Illuminate\Support\Facades\Storage;
 class KuisController extends Controller
 {
     //slugg
-    public function index(Mapel $mapel)
+    public function index(string $mapel_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         // Ambil semua kuis yang berelasi dengan mapel tertentu
         $kuisList = Kuis::where('id_mapel', $mapel->id)->get();
 
         return view('siswa/kuis/index', compact('kuisList', 'mapel'));
     }
 
-    public function show(Mapel $mapel, Kuis $kuis)
+    public function show(string $mapel_slug, Kuis $kuis)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         $soals = Soal::where('id_kuis', $kuis->id)->orderBy('urutan')->get();
         return view('siswa.kuis.show', compact('kuis', 'soals'));
     }
@@ -86,9 +88,10 @@ class KuisController extends Controller
             ->with('success', 'Jawaban berhasil dikumpulkan. Nilai: ' . $totalNilai);
     }
     
-    public function kuis($slug)
+    public function kuis(string $mapel_slug)
     {
-        $mapel = Mapel::where('slug', $slug)->firstOrFail(); // otomatis 404 jika slug salah
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
+        // $mapel = Mapel::where('slug', $slug)->firstOrFail(); // otomatis 404 jika slug salah
         $daftar_kuis = Kuis::all();
         return view('guru.kuis.index', [
             'tittle' => 'Kuis',
@@ -97,8 +100,9 @@ class KuisController extends Controller
         ]);
     }
 
-    public function soal(Mapel $mapel, Kuis $kuis)
+    public function soal(string $mapel_slug, Kuis $kuis)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         // Validasi bahwa kuis ini milik mapel yang benar
         if ($kuis->id_mapel !== $mapel->id) {
             abort(404);

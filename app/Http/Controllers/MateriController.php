@@ -8,9 +8,9 @@ use App\Models\materi;
 
 class MateriController extends Controller
 {
-    public function siswa(Mapel $mapel)
+    public function siswa(string $mapel_slug)
     {
-        // Ambil materi yang hanya milik mapel ini
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         $materi = $mapel->materi;
 
         return view('siswa.materi.index', [
@@ -20,8 +20,9 @@ class MateriController extends Controller
         ]);
     }
 
-    public function guru(Mapel $mapel)
+    public function guru(string $mapel_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         // Cek apakah Mapel berhasil dibinding (Anda sudah konfirmasi ini berhasil)
         // dd($mapel); 
 

@@ -33,9 +33,10 @@ class MataPelajaranController extends Controller
     }
 
 
-    public function pertemuan($slug)
+    public function pertemuan(string $mapel_slug)
     {
-        $mapel = Mapel::where('slug', $slug)->firstOrFail(); // otomatis 404 jika slug salah
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
+        // $mapel = Mapel::where('slug', $slug)->firstOrFail(); // otomatis 404 jika slug salah
         // $user = Auth::user();
 
         // Ambil siklus_pjbls sesuai mapel
@@ -89,10 +90,9 @@ class MataPelajaranController extends Controller
         return redirect()->back()->with('success', 'Pertemuan berhasil dihapus.');
     }
 
-    public function detail($slug)
+    public function detail(string $mapel_slug)
     {
-
-        $mapel = Mapel::where('slug', $slug)->firstOrFail(); // otomatis 404 jika slug salah
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         // Ambil tujuan pembelajaran sesuai id_kelas dari mapel pertama
         $tujuan_pembelajaran = tujuan_pembelajaran::where('id_mapel', $mapel->id)->get();
 

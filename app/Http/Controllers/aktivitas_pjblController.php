@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Auth;
 
 class aktivitas_pjblController extends Controller
 {
-    public function index(Mapel $mapel)
+    public function index(string $mapel_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
         $siklus_pjbls = siklus_pjbl::where('id_mapel', $mapel->id)->get();
         // dd($siklus_pjbls);
 
@@ -31,8 +32,10 @@ class aktivitas_pjblController extends Controller
         ]);
     }
 
-    public function aktivitas_pjbl(Mapel $mapel, siklus_pjbl $siklus_pjbl)
+    public function aktivitas_pjbl(string $mapel_slug, string $siklus_pjbl_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
+        $siklus_pjbl = \App\Models\siklus_pjbl::where('slug', $siklus_pjbl_slug)->firstOrFail();
         $userId = Auth::id();
 
         $userkelompok_pjbl = anggota_kelompok::where('id_user', $userId)->first();
@@ -78,8 +81,11 @@ class aktivitas_pjblController extends Controller
 
 
     //syntax siswa
-    public function syntax(Mapel $mapel, siklus_pjbl $siklus_pjbl, aktivitas_pjbl $aktivitas_pjbl)
+    public function syntax(string $mapel_slug, string $siklus_pjbl_slug, string $aktivitas_pjbl_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
+        $siklus_pjbl = \App\Models\siklus_pjbl::where('slug', $siklus_pjbl_slug)->firstOrFail();
+        $aktivitas_pjbl = \App\Models\aktivitas_pjbl::where('slug', $aktivitas_pjbl_slug)->firstOrFail();
         $userId = Auth::id();
 
         $userkelompok_pjbl = anggota_kelompok::with('posisi')

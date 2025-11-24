@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Auth;
 
 class kelompok_pjblController extends Controller
 {
-    public function kelompok_pjbl(Mapel $mapel, siklus_pjbl $siklus_pjbl)
+    public function kelompok_pjbl(string $mapel_slug, string $siklus_pjbl_slug)
     {
+        $mapel = \App\Models\Mapel::where('slug', $mapel_slug)->firstOrFail();
+        $siklus_pjbl = \App\Models\siklus_pjbl::where('slug', $siklus_pjbl_slug)->firstOrFail();
         $user = Auth::user();
 
         // Cek akses kelas
