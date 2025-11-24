@@ -45,8 +45,8 @@
                 @endauth       
                 @guest
                     <div class="flex space-x-2">
-                        <a href="/login" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Login</a>
-                        <a href="/regist" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
+                        <a href="{{ url('login') }}" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Login</a>
+                        <a href="{{ url('regist') }}" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
                     </div>
                 @endguest
         </div>
@@ -93,8 +93,8 @@
         @guest
         <!-- Login dan Register -->
         <div class="space-y-1">
-            <a href="/login" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700">Login</a>
-            <a href="/register" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700">Register</a>
+            <a href="{{ url('login') }}" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700">Login</a>
+            <a href="{{ url('regist') }}" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700">Register</a>
         </div>
         @endguest
     </div>
